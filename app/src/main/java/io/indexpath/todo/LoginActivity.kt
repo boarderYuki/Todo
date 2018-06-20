@@ -83,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
             if (!user.isEmpty() && user.last()?.password == getPasswordFromMyPref){
                 // 결과 화면으로 넘기고 종료
-                //startActivity<ResultActivity>()
+                startActivity<MainActivity>()
                 finish()
             }
 
@@ -135,7 +135,7 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
                     Toasty.success(this, "로그인 성공", Toast.LENGTH_SHORT, true).show()
-                    //startActivity<ResultActivity>()
+                    startActivity<MainActivity>()
                     finish()
 
                 }
