@@ -4,8 +4,11 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.Window
 import android.view.WindowManager
+import io.realm.Realm
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var realm:Realm
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,5 +24,12 @@ class MainActivity : AppCompatActivity() {
 
 
         setContentView(R.layout.activity_main)
+
+    }
+
+
+
+    companion object {
+        private val TAG = "Todo"
     }
 }

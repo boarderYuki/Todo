@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3f51b5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
+    <!--color name="colorPrimary">#3f51b5</color-->
+    <!--color name="colorPrimaryDark">#303F9F</color-->
+    <color name="colorPrimary">#353e51</color>
+    <color name="colorPrimaryDark">#282e3d</color>
     <color name="colorAccent">#ff4081</color>
 
     <color name="actionBarPrimary">#353e51</color>
     <color name="textBg">#cad0d8</color>
+
+    <color name="buttonOn">#1c9dba</color>
+    <color name="buttonOff">#bcbfbf</color>
 </resources>
