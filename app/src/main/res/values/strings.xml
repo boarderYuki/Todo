@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">Todo</string>
+
+    <string name="name">ID</string>
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="passwordAgain">Password again</string>
+    <string name="save">SAVE</string>
+    <string name="login">Login</string>
+    <string name="user_email">user Id</string>
+    <string name="user_password">user password</string>
+    <string name="user_info">User Info.</string>
+    <string name="user_nickname">user nickname</string>
+    <string name="deleteData">Delete Profile</string>
+    <string name="logOut">Log Out</string>
+    <string name="auccessLogin">로그인 성공</string>
+    <string name="textview">loginPassword</string>
+    <string name="loginUser">TextView</string>
+    <string name="successTitle">To Do</string>
+    <string name="sign_up">Sign Up</string>
 </resources>
