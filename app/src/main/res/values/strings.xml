@@ -4,7 +4,7 @@
     <string name="name">ID</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
-    <string name="passwordAgain">Password again</string>
+    <string name="passwordAgain">Confirm Password</string>
     <string name="save">SAVE</string>
     <string name="login">Login</string>
     <string name="user_email">user Id</string>

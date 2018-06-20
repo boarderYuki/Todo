@@ -6,4 +6,248 @@
     android:layout_height="match_parent"
     tools:context=".JoinActivity">
 
+    <!-- 아이디 -->
+
+    <View
+        android:id="@+id/idBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/custom_edit_text_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toStartOf="@+id/editTextId"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextId"
+        app:layout_constraintVertical_bias="1.0" />
+
+
+    <ImageView
+        android:id="@+id/idImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="#cad0d8"
+        app:layout_constraintBottom_toBottomOf="@+id/idBg"
+        app:layout_constraintEnd_toEndOf="@+id/idBg"
+        app:layout_constraintStart_toStartOf="@+id/idBg"
+        app:layout_constraintTop_toTopOf="@+id/idBg"
+        app:srcCompat="@drawable/ico_person"
+        tools:ignore="VectorDrawableCompat" />
+
+
+    <EditText
+        android:id="@+id/editTextId"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="textStart"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/idBg"
+        app:layout_constraintTop_toBottomOf="@+id/checkDoubleIdText" />
+
+
+    <View
+        android:id="@+id/emailBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/custom_edit_text_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextEmail"
+        app:layout_constraintEnd_toStartOf="@+id/editTextEmail"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="spread_inside"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextEmail" />
+
+    <ImageView
+        android:id="@+id/emailImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="#cad0d8"
+        app:layout_constraintBottom_toBottomOf="@+id/emailBg"
+        app:layout_constraintEnd_toEndOf="@+id/emailBg"
+        app:layout_constraintStart_toStartOf="@+id/emailBg"
+        app:layout_constraintTop_toTopOf="@+id/emailBg"
+        app:srcCompat="@drawable/ico_mail"
+        tools:ignore="VectorDrawableCompat" />
+
+    <EditText
+        android:id="@+id/editTextEmail"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/emailBg"
+        app:layout_constraintTop_toBottomOf="@+id/editTextId" />
+
+    <!-- 패스워드1 -->
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPasswordAgain"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/passwordBg"
+        app:layout_constraintTop_toBottomOf="@+id/editTextEmail" />
+
+
+    <!-- 패스워드1 -->
+    <View
+        android:id="@+id/passwordBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/custom_edit_text_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextPassword"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ImageView
+        android:id="@+id/pwImage"
+        android:layout_width="32dp"
+        android:layout_height="36dp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordBg"
+        app:layout_constraintEnd_toEndOf="@+id/passwordBg"
+        app:layout_constraintStart_toStartOf="@+id/passwordBg"
+        app:layout_constraintTop_toTopOf="@+id/passwordBg"
+        app:srcCompat="@drawable/ico_password"
+        tools:ignore="VectorDrawableCompat" />
+
+    <!-- 패스워드2 -->
+    <View
+        android:id="@+id/password2Bg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="32dp"
+        android:background="@drawable/custom_edit_text_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPasswordAgain"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPasswordAgain"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editTextPasswordAgain" />
+
+    <ImageView
+        android:id="@+id/pw2Image"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/password2Bg"
+        app:layout_constraintEnd_toEndOf="@+id/password2Bg"
+        app:layout_constraintStart_toStartOf="@+id/password2Bg"
+        app:layout_constraintTop_toTopOf="@+id/password2Bg"
+        app:srcCompat="@drawable/ico_lock_open"
+        tools:ignore="VectorDrawableCompat" />
+
+    <EditText
+        android:id="@+id/editTextPasswordAgain"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/passwordAgain"
+        android:inputType="textPassword"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/password2Bg"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
+    <Button
+        android:id="@+id/buttonLogOut"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button_bg"
+        android:elevation="0dp"
+        android:text="@string/sign_up"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPasswordAgain"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/password2Bg"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPasswordAgain" />
+
+    <ImageView
+        android:id="@+id/profile_pic"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        app:layout_constraintBottom_toTopOf="@+id/checkId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:srcCompat="@mipmap/ic_launcher_round" />
+
+    <TextView
+        android:id="@+id/checkId"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toTopOf="@+id/checkDoubleIdText"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_pic" />
+
+    <TextView
+        android:id="@+id/checkDoubleIdText"
+        android:layout_width="0dp"
+        android:layout_height="22dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:textAlignment="center"
+        android:textColor="@android:color/holo_red_light"
+        app:layout_constraintBottom_toTopOf="@+id/editTextId"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/checkId" />
+
 </android.support.constraint.ConstraintLayout>

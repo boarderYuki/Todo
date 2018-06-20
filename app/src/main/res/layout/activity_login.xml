@@ -43,6 +43,7 @@
         app:layout_constraintStart_toStartOf="@+id/headerTitleBg"
         app:layout_constraintTop_toTopOf="@+id/headerTitleBg" />
 
+    <!-- 아이디 -->
     <View
         android:id="@+id/idBg"
         android:layout_width="48dp"
@@ -58,8 +59,8 @@
 
     <ImageView
         android:id="@+id/idImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         android:background="#cad0d8"
         app:layout_constraintBottom_toBottomOf="@+id/idBg"
         app:layout_constraintEnd_toEndOf="@+id/idBg"
@@ -105,8 +106,8 @@
 
     <ImageView
         android:id="@+id/pwImage"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/passwordBg"
         app:layout_constraintEnd_toEndOf="@+id/passwordBg"
         app:layout_constraintStart_toStartOf="@+id/passwordBg"
