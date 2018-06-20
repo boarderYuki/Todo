@@ -6,8 +6,21 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <CheckBox
+        android:id="@+id/checkAutoLogin"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Remember Password"
+        android:textColor="@color/actionBarPrimary"
+        app:layout_constraintBottom_toTopOf="@+id/buttonLogOut"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/editTextPassword"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+
     <View
-        android:id="@+id/view"
+        android:id="@+id/headerTitleBg"
         android:layout_width="wrap_content"
         android:layout_height="80dp"
         android:background="@color/actionBarPrimary"
@@ -18,6 +31,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
 
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,40 +39,129 @@
         android:textColor="@android:color/white"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+        app:layout_constraintBottom_toBottomOf="@+id/headerTitleBg"
+        app:layout_constraintEnd_toEndOf="@+id/headerTitleBg"
+        app:layout_constraintStart_toStartOf="@+id/headerTitleBg"
+        app:layout_constraintTop_toTopOf="@+id/headerTitleBg" />
 
     <View
-        android:id="@+id/view2"
+        android:id="@+id/idBg"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_marginStart="32dp"
         android:background="@drawable/custom_edit_text_bg"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
+        app:layout_constraintEnd_toStartOf="@+id/editTextId"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.498" />
+        app:layout_constraintTop_toTopOf="@+id/editTextId" />
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/idImage"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:background="#cad0d8"
-        app:layout_constraintBottom_toTopOf="@+id/view2"
-        app:layout_constraintEnd_toStartOf="@+id/view2"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/view2"
-        app:layout_constraintTop_toBottomOf="@+id/view2"
-        app:srcCompat="@drawable/ico_person" />
+        app:layout_constraintBottom_toBottomOf="@+id/idBg"
+        app:layout_constraintEnd_toEndOf="@+id/idBg"
+        app:layout_constraintStart_toStartOf="@+id/idBg"
+        app:layout_constraintTop_toTopOf="@+id/idBg"
+        app:srcCompat="@drawable/ico_person"
+        tools:ignore="VectorDrawableCompat" />
 
-    <android.support.constraint.Group
-        android:id="@+id/group"
+
+    <EditText
+        android:id="@+id/editTextId"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/name"
+        android:inputType="textPersonName"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="textStart"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/idBg"
+        app:layout_constraintTop_toBottomOf="@+id/headerTitleBg"
+        app:layout_constraintVertical_chainStyle="packed" />
+
+    <!-- 패스워드 -->
+
+    <View
+        android:id="@+id/passwordBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/custom_edit_text_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/editTextPassword"
+        app:layout_constraintEnd_toStartOf="@+id/editTextPassword"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/idBg"
+        app:layout_constraintTop_toTopOf="@+id/editTextPassword" />
+
+    <ImageView
+        android:id="@+id/pwImage"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        app:layout_constraintBottom_toBottomOf="@+id/passwordBg"
+        app:layout_constraintEnd_toEndOf="@+id/passwordBg"
+        app:layout_constraintStart_toStartOf="@+id/passwordBg"
+        app:layout_constraintTop_toTopOf="@+id/passwordBg"
+        app:srcCompat="@drawable/ico_password"
+        tools:ignore="VectorDrawableCompat" />
+
+    <EditText
+        android:id="@+id/editTextPassword"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="@string/password"
+        android:inputType="textPassword"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toTopOf="@+id/checkAutoLogin"
+        app:layout_constraintEnd_toEndOf="@+id/editTextId"
+        app:layout_constraintStart_toEndOf="@+id/passwordBg"
+        app:layout_constraintTop_toBottomOf="@+id/editTextId" />
+
+    <Button
+        android:id="@+id/buttonLogOut"
+        style="@style/Widget.AppCompat.Button.Borderless"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_button_bg"
+        android:elevation="0dp"
+        android:text="@string/login"
+        android:textColor="#fff"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSignUp"
+        app:layout_constraintEnd_toEndOf="@+id/editTextPassword"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="@+id/passwordBg"
+        app:layout_constraintTop_toBottomOf="@+id/checkAutoLogin" />
+
+    <Button
+        android:id="@+id/buttonSignUp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:constraint_referenced_ids="view2,imageView" />
-
+        android:layout_marginTop="16dp"
+        android:background="@android:color/transparent"
+        android:text="Create an Account"
+        android:textColor="@color/actionBarPrimary"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/buttonLogOut"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/buttonLogOut"
+        app:layout_constraintTop_toBottomOf="@+id/buttonLogOut" />
 
 </android.support.constraint.ConstraintLayout>
 
