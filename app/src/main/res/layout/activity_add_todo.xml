@@ -7,7 +7,7 @@
     tools:context=".AddTodoActivity">
 
     <EditText
-        android:id="@+id/textViewTodo"
+        android:id="@+id/todoInputText"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginBottom="8dp"
@@ -40,12 +40,12 @@
         android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/custom_cancel_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/doneImage"
+        app:layout_constraintBottom_toBottomOf="@+id/doneButton"
         app:layout_constraintEnd_toStartOf="@+id/doneBg"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="@+id/textViewTodo"
-        app:layout_constraintTop_toTopOf="@+id/doneImage" />
+        app:layout_constraintStart_toStartOf="@+id/todoInputText"
+        app:layout_constraintTop_toTopOf="@+id/doneButton" />
 
     <View
         android:id="@+id/doneBg"
@@ -54,13 +54,13 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/custom_done_bg"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTodo"
+        app:layout_constraintEnd_toEndOf="@+id/todoInputText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/cancelBg"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTodo" />
+        app:layout_constraintTop_toBottomOf="@+id/todoInputText" />
 
     <ImageView
-        android:id="@+id/cancelImage"
+        android:id="@+id/cancelButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/cancelBg"
@@ -70,7 +70,7 @@
         app:srcCompat="@drawable/ic_clear_white_48dp" />
 
     <ImageView
-        android:id="@+id/doneImage"
+        android:id="@+id/doneButton"
         android:layout_width="32dp"
         android:layout_height="32dp"
         app:layout_constraintBottom_toBottomOf="@+id/doneBg"

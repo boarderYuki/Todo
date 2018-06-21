@@ -14,12 +14,12 @@
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:background="@drawable/custom_edit_text_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewTodo"
-        app:layout_constraintEnd_toStartOf="@+id/textViewTodo"
+        app:layout_constraintBottom_toBottomOf="@+id/todoInputText"
+        app:layout_constraintEnd_toStartOf="@+id/todoInputText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewTodo"
+        app:layout_constraintTop_toTopOf="@+id/todoInputText"
         app:layout_constraintVertical_bias="1.0" />
 
 
@@ -37,7 +37,7 @@
 
 
     <EditText
-        android:id="@+id/textViewTodo"
+        android:id="@+id/todoInputText"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginEnd="32dp"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/emailBg"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTodo" />
+        app:layout_constraintTop_toBottomOf="@+id/todoInputText" />
 
     <!-- 패스워드1 -->
 
@@ -244,7 +244,7 @@
         android:layout_marginStart="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_light"
-        app:layout_constraintBottom_toTopOf="@+id/textViewTodo"
+        app:layout_constraintBottom_toTopOf="@+id/todoInputText"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

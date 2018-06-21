@@ -1,6 +1,7 @@
 package io.indexpath.todo.realmDB
 
 import io.realm.RealmObject
+import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 import java.util.*
 
@@ -11,8 +12,9 @@ import java.util.*
  */
 
 @RealmClass
-open class TodoList: RealmObject() {
-
+open class TodoDB: RealmObject() {
+    @PrimaryKey
+    open var todoID:Int = 0
     var id: Date? = null
     var owner: String? = null
     var cDate: String = ""

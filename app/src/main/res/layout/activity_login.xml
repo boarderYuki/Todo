@@ -49,12 +49,12 @@
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:background="@drawable/custom_edit_text_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/textViewTodo"
-        app:layout_constraintEnd_toStartOf="@+id/textViewTodo"
+        app:layout_constraintBottom_toBottomOf="@+id/todoInputText"
+        app:layout_constraintEnd_toStartOf="@+id/todoInputText"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/textViewTodo" />
+        app:layout_constraintTop_toTopOf="@+id/todoInputText" />
 
     <ImageView
         android:id="@+id/idImage"
@@ -70,7 +70,7 @@
 
 
     <EditText
-        android:id="@+id/textViewTodo"
+        android:id="@+id/todoInputText"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginEnd="32dp"
@@ -128,9 +128,9 @@
         android:paddingRight="16dp"
         android:textColor="#404040"
         app:layout_constraintBottom_toTopOf="@+id/checkAutoLogin"
-        app:layout_constraintEnd_toEndOf="@+id/textViewTodo"
+        app:layout_constraintEnd_toEndOf="@+id/todoInputText"
         app:layout_constraintStart_toEndOf="@+id/passwordBg"
-        app:layout_constraintTop_toBottomOf="@+id/textViewTodo" />
+        app:layout_constraintTop_toBottomOf="@+id/todoInputText" />
 
     <Button
         android:id="@+id/buttonLogOut"
@@ -156,7 +156,7 @@
         android:background="@android:color/transparent"
         android:text="Create an Account >"
         android:textAllCaps="false"
-        android:textColor="#FF6B6B"
+        android:textColor="#4ECDC4"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/buttonLogOut"
         app:layout_constraintHorizontal_bias="1.0"

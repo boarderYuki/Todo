@@ -69,16 +69,11 @@ class MainActivity : AppCompatActivity() {
 
 
         addTodoButton.setOnClickListener {
-//            val intent = Intent(this, AddTodoActivity::class.java)
-//            intent.putExtra("loginId", loginId)
-//            startActivity(intent)
-//            //finish()
-//            startActivity<AddTodoActivity>()
 
             val i = Intent(this, AddTodoActivity::class.java)
             startActivity(i)
+            //finish()
             overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
-
 
             Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
         }

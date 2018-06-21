@@ -7,12 +7,20 @@ import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
-
-
-
+import android.widget.Toast
+import es.dmoral.toasty.Toasty
+import io.indexpath.todo.realmDB.TodoDB
+import io.indexpath.todo.realmDB.TodoRealmManager
+import kotlinx.android.synthetic.main.activity_add_todo.*
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
+import java.util.*
 
 
 class AddTodoActivity : AppCompatActivity() {
+
+    private var getIdFromMyPref = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,11 +38,81 @@ class AddTodoActivity : AppCompatActivity() {
 
         /** 로그인 아이디 가져오기 */
         val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
-        val getIdFromMyPref:String = myPref.getString("id", "")
+        getIdFromMyPref = myPref.getString("id", "")
 
         Log.d(TAG, "addTodo login id : $getIdFromMyPref")
+
+        initListener()
+
     }
 
+
+//    private fun cancelClicked() {
+//        cancelButton.setOnClickListener {
+//
+//            val intent = Intent(this, MainActivity::class.java)
+//            startActivity(intent)
+//            finish()
+//            overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
+//
+//            Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
+//        }
+//    }
+
+    private fun initListener(){
+        doneButton.setOnClickListener{
+//            var todoRealmManager = TodoRealmManager()
+//            var todo = TodoDTO()
+//            todo.todoID = System.currentTimeMillis()
+//            todo.userID = userID
+//            todo.content =  editToDoText.text.toString()
+//            todo.isTodo = false
+//            todoRealmManager.insertTodo(TodoDTO::class.java, todo)
+//            setResult(Activity.RESULT_OK)
+//            finish()
+
+
+            if (todoInputText.text.isNotBlank()) {
+                val finalTodoText = removeExtraWhiteSpaces(todoInputText.toString())
+
+                // 타임스탬프 미니멈 API 26 필요함
+                val current = LocalDateTime.now()
+                val formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.MEDIUM)
+                val formatted = current.format(formatter)
+
+                /** 렘에 투두 목록을 유저아이디 owner로 저장 */
+
+//                realm.beginTransaction()
+//                val todoDB = realm.createObject(TodoList::class.java)
+                var todoRealmManager = TodoRealmManager()
+                var todoDB = TodoDB()
+                todoDB.id = Date()
+                todoDB.owner = getIdFromMyPref
+                todoDB.cDate = formatted
+                todoDB.content = finalTodoText
+                todoDB.isFinish = false
+                todoRealmManager.insertTodo(TodoDB::class.java, todoDB)
+
+                Toasty.success(this, "새로운 목록이 추가되었습니다.", Toast.LENGTH_SHORT, true).show()
+                finish()
+                overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
+//                realm.commitTransaction()
+
+                /** 데이타가 추가되면 리사이클뷰를 다시 그리는 것 같음 */
+//                recyclerView.adapter.notifyDataSetChanged()
+//                customDialog.dismiss()
+
+            } else {
+                // 공백만 있거나 내용이 없는 경우
+                Toasty.error(this, "내용이 없습니다.", Toast.LENGTH_SHORT, true).show()
+            }
+
+        }
+        cancelButton.setOnClickListener{
+            finish()
+            overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
+        }
+    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.getItemId()) {
@@ -51,6 +129,22 @@ class AddTodoActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
     }
 
+    // 공백 검사
+    fun removeExtraWhiteSpaces(value: String): String {
+
+        var result = ""
+        var prevChar = ""
+
+        for ( char in value ) {
+
+            if ( (prevChar == " " && char == ' ').not() ) {
+                result += char
+            }
+            prevChar = char.toString()
+        }
+
+        return result
+    }
 
     companion object {
         private val TAG = "Todo"
