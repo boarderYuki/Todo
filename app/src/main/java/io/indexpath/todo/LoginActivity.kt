@@ -10,6 +10,7 @@ import android.view.WindowManager
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
+import io.indexpath.todo.realmDB.Person
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.realm.Realm

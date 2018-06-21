@@ -7,6 +7,10 @@ import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
+import io.indexpath.todo.fragment.Event
+import io.indexpath.todo.fragment.Search
+import io.indexpath.todo.fragment.Setting
+import io.indexpath.todo.fragment.TodoListFragment
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
@@ -26,6 +30,9 @@ class MainActivity : AppCompatActivity() {
         val nvDrawer = nv as NavigationView
         mToggle!!.syncState()
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+
+        val fragmentManager = supportFragmentManager
+        fragmentManager.beginTransaction().replace(R.id.flcontent, TodoListFragment()).commit()
         setupDrawerContent(nvDrawer)
     }
 
@@ -38,14 +45,16 @@ class MainActivity : AppCompatActivity() {
     fun selectItemDrawer(menuItem: MenuItem) {
         var myFragment: Fragment? = null
         val fragmentClass: Class<*>
+
         when (menuItem.itemId) {
-            R.id.db -> fragmentClass = Dashboard::class.java
+            R.id.db -> fragmentClass = TodoListFragment::class.java
             R.id.event -> fragmentClass = Event::class.java
             R.id.search -> fragmentClass = Search::class.java
             R.id.settings -> fragmentClass = Setting::class.java
-            else -> fragmentClass = Dashboard::class.java
+            else -> fragmentClass = TodoListFragment::class.java
         }
         try {
+
             myFragment = fragmentClass.newInstance() as Fragment
         } catch (e: Exception) {
             e.printStackTrace()

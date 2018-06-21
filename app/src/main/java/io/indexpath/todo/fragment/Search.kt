@@ -1,4 +1,4 @@
-package io.indexpath.todo
+package io.indexpath.todo.fragment
 
 import android.content.Context
 import android.net.Uri

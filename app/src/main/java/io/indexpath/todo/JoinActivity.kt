@@ -3,11 +3,12 @@ package io.indexpath.todo
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.util.Patterns
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
+import io.indexpath.todo.realmDB.Person
+import io.indexpath.todo.realmDB.UserRealmManager
 import io.reactivex.Observable
 import io.reactivex.ObservableTransformer
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,16 +21,22 @@ import java.util.concurrent.TimeUnit
 
 class JoinActivity : AppCompatActivity() {
 
+    private lateinit var userRealmManager: UserRealmManager
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_join)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        Realm.init(this)
-        val config = RealmConfiguration.Builder().name("person.realm").build()
-        val realm = Realm.getInstance(config)
-        Log.d(TAG, "path: " + realm.path)
+        userRealmManager = UserRealmManager()
+
+
+
+//        Realm.init(this)
+//        val config = RealmConfiguration.Builder().name("person.realm").build()
+//        val realm = Realm.getInstance(config)
+//        Log.d(TAG, "path: " + realm.path)
 
 
         /** 가입 버튼 관련 옵저버
@@ -142,15 +149,12 @@ class JoinActivity : AppCompatActivity() {
         buttonLogOut.setOnClickListener {
 
             /** 렘에 회원정보 저장 */
-            realm.beginTransaction()
-            val number = realm.where(Person::class.java).count() + 1
-
-            val person = realm.createObject(Person::class.java, number)
+            val person = Person()
 
             person.userId = editTextId.text.toString()
             person.email = editTextEmail.text.toString()
             person.password = editTextPassword.text.toString()
-            realm.commitTransaction()
+            userRealmManager.insertUser(Person::class.java, person)
 
             Toasty.success(this, "저장 성공", Toast.LENGTH_SHORT, true).show();
 

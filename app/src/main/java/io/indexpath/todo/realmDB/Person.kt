@@ -1,4 +1,4 @@
-package io.indexpath.todo
+package io.indexpath.todo.realmDB
 
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
@@ -12,7 +12,7 @@ import java.util.*
  */
 
 @RealmClass
-open class Person(): RealmObject() {
+open class Person: RealmObject() {
 
     @PrimaryKey
     var id: Long = 0
