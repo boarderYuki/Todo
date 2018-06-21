@@ -6,12 +6,12 @@
 
     <color name="colorPrimary">#353e51</color>
     <color name="colorPrimaryDark">#282e3d</color>
-    <color name="colorAccent">#1c9dba</color>
+    <color name="colorAccent">#4ECDC4</color>
 
     <color name="actionBarPrimary">#353e51</color>
-    <color name="textBg">#cad0d8</color>
+    <color name="textBg">#f7fff7</color>
 
-    <color name="buttonOn">#1c9dba</color>
+    <color name="buttonOn">#4ECDC4</color>
     <color name="buttonOff">#bcbfbf</color>
 
     <color name="white">#ffffff</color>

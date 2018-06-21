@@ -44,7 +44,7 @@ class TodoListFragment : Fragment() {
         }
 
 
-        Log.d(TAG, "DrawerActiyity ${(activity as MainActivity).getUserID()!!}")
+//        Log.d(TAG, "DrawerActiyity ${(activity as MainActivity).getUserID()!!}")
 
     }
 

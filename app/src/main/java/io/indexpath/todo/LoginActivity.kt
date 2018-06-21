@@ -7,7 +7,6 @@ import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.Window
-import android.view.WindowManager
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
@@ -27,7 +26,7 @@ class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
+        //window.setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN)
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE)
 
 //        try {
@@ -143,6 +142,7 @@ class LoginActivity : AppCompatActivity() {
                     intent.putExtra("id", editTextId.text.toString())
                     startActivity(intent)
                     finish()
+                    overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
 
                 }
             }
@@ -152,6 +152,7 @@ class LoginActivity : AppCompatActivity() {
         /** 회원 가입 버튼 클릭 */
         buttonSignUp.setOnClickListener {
             startActivity<JoinActivity>()
+            overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
         }
 
     }

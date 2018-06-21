@@ -1,9 +1,11 @@
 package io.indexpath.todo
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.util.Patterns
+import android.view.MenuItem
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
@@ -27,7 +29,7 @@ class JoinActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        supportActionBar!!.setTitle("MEMBER REGISTRATION")
+        //supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_join)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
@@ -162,6 +164,8 @@ class JoinActivity : AppCompatActivity() {
 
             startActivity<LoginActivity>()
             finish()
+            // to previous
+            overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
         }
 
     }
@@ -184,6 +188,21 @@ class JoinActivity : AppCompatActivity() {
                 Observable.just("")
             }
         }
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.getItemId()) {
+            android.R.id.home -> onBackPressed()
+        }
+        return true
+    }
+
+    override fun onBackPressed() {
+        super.onBackPressed()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+        overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
     }
 
     companion object {

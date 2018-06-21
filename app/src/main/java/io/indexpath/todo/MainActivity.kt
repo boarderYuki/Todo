@@ -1,6 +1,7 @@
 package io.indexpath.todo
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -10,7 +11,6 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
-import android.widget.TextView
 import android.widget.Toast
 import es.dmoral.toasty.Toasty
 import io.indexpath.todo.fragment.Event
@@ -18,8 +18,11 @@ import io.indexpath.todo.fragment.Search
 import io.indexpath.todo.fragment.Setting
 import io.indexpath.todo.fragment.TodoListFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.custom_bar_main.*
 import kotlinx.android.synthetic.main.header.view.*
 import org.jetbrains.anko.startActivity
+
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -32,9 +35,12 @@ class MainActivity : AppCompatActivity() {
         //supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_main)
 
-        var intent = intent
-        loginId = intent.getStringExtra("id")
-        Log.d(TAG, "MainActivity : $loginId")
+//        var intent = intent
+//        loginId = intent.getStringExtra("id")
+//        Log.d(TAG, "MainActivity : $loginId")
+        val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        val getIdFromMyPref:String = myPref.getString("id", "")
+        val getPasswordFromMyPref = myPref.getString("password", "")
 
         //mDrawerLayout = findViewById<View>(R.id.drawer)
         mDrawerLayout = drawer
@@ -42,14 +48,14 @@ class MainActivity : AppCompatActivity() {
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         val nvDrawer = nv as NavigationView
         mToggle!!.syncState()
-        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        //supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.flcontent, TodoListFragment()).commit()
         setupDrawerContent(nvDrawer)
 
         val headerView = nv.getHeaderView(0)
-        headerView.headerId.text = loginId
+        headerView.headerId.text = getIdFromMyPref
 
         try {
             supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
@@ -57,6 +63,24 @@ class MainActivity : AppCompatActivity() {
             supportActionBar!!.setDisplayHomeAsUpEnabled(true)
         } catch (e: Exception) {
             println(e.message)
+        }
+
+
+
+
+        addTodoButton.setOnClickListener {
+//            val intent = Intent(this, AddTodoActivity::class.java)
+//            intent.putExtra("loginId", loginId)
+//            startActivity(intent)
+//            //finish()
+//            startActivity<AddTodoActivity>()
+
+            val i = Intent(this, AddTodoActivity::class.java)
+            startActivity(i)
+            overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
+
+
+            Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
         }
 
     }
@@ -81,6 +105,7 @@ class MainActivity : AppCompatActivity() {
 
         if (menuItem.itemId == R.id.logout) {
 
+
             val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
             val editor = myPref.edit()
             editor.putBoolean("autoLogin", false)
@@ -88,6 +113,8 @@ class MainActivity : AppCompatActivity() {
 
             startActivity<LoginActivity>()
             finish()
+            // to previous
+            //overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
 
             Toasty.success(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT, true).show()
         }
@@ -102,8 +129,12 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).commit()
         menuItem.isChecked = true
         //title = menuItem.title
-        findViewById<TextView>(R.id.customTitle).setText(menuItem.title)
+        //findViewById<TextView>(R.id.customTitle).setText(menuItem.title)
+        customTitle.setText(menuItem.title)
+
+
         mDrawerLayout!!.closeDrawers()
+
     }
 
     private fun setupDrawerContent(navigationView: NavigationView) {
