@@ -156,7 +156,7 @@
         android:background="@android:color/transparent"
         android:text="Create an Account >"
         android:textAllCaps="false"
-        android:textColor="@color/actionBarPrimary"
+        android:textColor="#FF6B6B"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/buttonLogOut"
         app:layout_constraintHorizontal_bias="1.0"

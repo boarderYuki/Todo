@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import io.indexpath.todo.MainActivity
 import io.indexpath.todo.R
 
 
@@ -50,6 +49,13 @@ class TodoListFragment : Fragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+
+
+        //val myPref = activity.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        val myPref = getActivity()!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        val getIdFromMyPref:String = myPref.getString("id", "")
+        Log.d(TAG, "inside fragment : $getIdFromMyPref")
+
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_todolist, container, false)
     }
@@ -70,6 +76,8 @@ class TodoListFragment : Fragment() {
 
         /** 투두리스트 가져오기 */
 //        todoLists = realm.where(TodoList::class.java).equalTo("owner", "${myPref.getString("id", "")}" ).sort("id", Sort.DESCENDING).findAll()
+
+
 
     }
 
