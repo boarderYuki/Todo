@@ -32,6 +32,10 @@ class TodoListFragment : Fragment() {
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
 
+    //private lateinit var adapter: TodoAdapter
+    //private var todoRealmManager = TodoRealmManager()
+    //private var userTodo: RealmResults<TodoDTO>? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {

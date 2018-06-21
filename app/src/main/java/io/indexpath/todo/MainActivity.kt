@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
+import android.support.v7.app.ActionBar
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.widget.TextView
 import android.widget.Toast
 import es.dmoral.toasty.Toasty
 import io.indexpath.todo.fragment.Event
@@ -48,6 +50,14 @@ class MainActivity : AppCompatActivity() {
 
         val headerView = nv.getHeaderView(0)
         headerView.headerId.text = loginId
+
+        try {
+            supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+            supportActionBar!!.setCustomView(R.layout.custom_bar_main)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        } catch (e: Exception) {
+            println(e.message)
+        }
 
     }
 
@@ -91,7 +101,8 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).commit()
         menuItem.isChecked = true
-        title = menuItem.title
+        //title = menuItem.title
+        findViewById<TextView>(R.id.customTitle).setText(menuItem.title)
         mDrawerLayout!!.closeDrawers()
     }
 
