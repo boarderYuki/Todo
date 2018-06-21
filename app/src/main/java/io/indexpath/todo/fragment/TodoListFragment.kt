@@ -4,9 +4,11 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import io.indexpath.todo.MainActivity
 import io.indexpath.todo.R
 
 
@@ -37,6 +39,8 @@ class TodoListFragment : Fragment() {
             param2 = it.getString(ARG_PARAM2)
         }
 
+
+        Log.d(TAG, "DrawerActiyity ${(activity as MainActivity).getUserID()!!}")
 
     }
 

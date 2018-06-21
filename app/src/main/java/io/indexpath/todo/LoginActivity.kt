@@ -1,6 +1,7 @@
 package io.indexpath.todo
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
@@ -11,16 +12,18 @@ import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
 import io.indexpath.todo.realmDB.Person
+import io.indexpath.todo.realmDB.UserRealmManager
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
 import io.realm.Realm
-import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 
 class LoginActivity : AppCompatActivity() {
 
-    lateinit var realm:Realm
+    //lateinit var realm:Realm
+
+    var realmManager = UserRealmManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +45,8 @@ class LoginActivity : AppCompatActivity() {
 
 
         Realm.init(this)
-        val config = RealmConfiguration.Builder().name("person.realm").build()
-        realm = Realm.getInstance(config)
+//        val config = RealmConfiguration.Builder().name("person.realm").build()
+//        realm = Realm.getInstance(config)
         //getLastMember()
 
         /** 로그인 버튼관련 옵저버
@@ -80,7 +83,7 @@ class LoginActivity : AppCompatActivity() {
 
             val getIdFromMyPref:String = myPref.getString("id", "")
             val getPasswordFromMyPref = myPref.getString("password", "")
-            val user = realm.where(Person::class.java).equalTo("userId",getIdFromMyPref).findAll()
+            val user = realmManager.findAll(getIdFromMyPref, "userId", Person::class.java)
 
             if (!user.isEmpty() && user.last()?.password == getPasswordFromMyPref){
                 // 결과 화면으로 넘기고 종료
@@ -99,8 +102,8 @@ class LoginActivity : AppCompatActivity() {
             //realm = Realm.getInstance(config)
             //realm.beginTransaction()
 
-            val user = realm.where(Person::class.java).equalTo("userId",editTextId.text.toString().trim()).findAll()
-
+            //val user = realm.where(Person::class.java).equalTo("userId",editTextId.text.toString().trim()).findAll()
+            val user = realmManager.findAll(editTextId.text.toString().trim(), "userId", Person::class.java)
             Log.d(TAG,"유저 카운트  : ${user.count()}")
 
             if (user.isEmpty()) {
@@ -136,7 +139,9 @@ class LoginActivity : AppCompatActivity() {
                     editor.apply()
 
                     Toasty.success(this, "로그인 성공", Toast.LENGTH_SHORT, true).show()
-                    startActivity<MainActivity>()
+                    val intent = Intent(this, MainActivity::class.java)
+                    intent.putExtra("id", editTextId.text.toString())
+                    startActivity(intent)
                     finish()
 
                 }

@@ -21,7 +21,9 @@ import java.util.concurrent.TimeUnit
 
 class JoinActivity : AppCompatActivity() {
 
-    private lateinit var userRealmManager: UserRealmManager
+    //private lateinit var userRealmManager: UserRealmManager
+
+    var userRealmManager = UserRealmManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,7 +31,7 @@ class JoinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_join)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        userRealmManager = UserRealmManager()
+        //userRealmManager = UserRealmManager()
 
 
 
@@ -158,7 +160,7 @@ class JoinActivity : AppCompatActivity() {
 
             Toasty.success(this, "저장 성공", Toast.LENGTH_SHORT, true).show();
 
-            startActivity<MainActivity>()
+            startActivity<LoginActivity>()
             finish()
         }
 

@@ -1,27 +1,38 @@
 package io.indexpath.todo
 
+import android.content.Context
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
 import android.support.v4.widget.DrawerLayout
 import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.view.MenuItem
+import android.widget.Toast
+import es.dmoral.toasty.Toasty
 import io.indexpath.todo.fragment.Event
 import io.indexpath.todo.fragment.Search
 import io.indexpath.todo.fragment.Setting
 import io.indexpath.todo.fragment.TodoListFragment
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.header.view.*
+import org.jetbrains.anko.startActivity
 
 class MainActivity : AppCompatActivity() {
 
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
+    lateinit var loginId : String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_main)
+
+        var intent = intent
+        loginId = intent.getStringExtra("id")
+        Log.d(TAG, "MainActivity : $loginId")
 
         //mDrawerLayout = findViewById<View>(R.id.drawer)
         mDrawerLayout = drawer
@@ -34,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.flcontent, TodoListFragment()).commit()
         setupDrawerContent(nvDrawer)
+
+        val headerView = nv.getHeaderView(0)
+        headerView.headerId.text = loginId
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -44,17 +59,30 @@ class MainActivity : AppCompatActivity() {
 
     fun selectItemDrawer(menuItem: MenuItem) {
         var myFragment: Fragment? = null
-        val fragmentClass: Class<*>
+        var fragmentClass: Class<*> = TodoListFragment::class.java
 
         when (menuItem.itemId) {
             R.id.db -> fragmentClass = TodoListFragment::class.java
             R.id.event -> fragmentClass = Event::class.java
             R.id.search -> fragmentClass = Search::class.java
             R.id.settings -> fragmentClass = Setting::class.java
-            else -> fragmentClass = TodoListFragment::class.java
+            //else -> fragmentClass = TodoListFragment::class.java
         }
-        try {
 
+        if (menuItem.itemId == R.id.logout) {
+
+            val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
+            val editor = myPref.edit()
+            editor.putBoolean("autoLogin", false)
+            editor.apply()
+
+            startActivity<LoginActivity>()
+            finish()
+
+            Toasty.success(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT, true).show()
+        }
+
+        try {
             myFragment = fragmentClass.newInstance() as Fragment
         } catch (e: Exception) {
             e.printStackTrace()
@@ -75,6 +103,9 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    fun getUserID() : String? {
+        return loginId
+    }
 
     companion object {
         private val TAG = "Todo"
