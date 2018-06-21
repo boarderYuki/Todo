@@ -50,7 +50,7 @@ class LoginActivity : AppCompatActivity() {
 
         /** 로그인 버튼관련 옵저버
          * 아이디와 패스워드 필드가 비워져있지만 않으면 버튼이 활성화 됨*/
-        val observableId = RxTextView.textChanges(editTextId)
+        val observableId = RxTextView.textChanges(textViewTodo)
                 .map { t -> t.toString().isNotEmpty() }
 
         val observablePw = RxTextView.textChanges(editTextPassword)
@@ -102,7 +102,7 @@ class LoginActivity : AppCompatActivity() {
             //realm.beginTransaction()
 
             //val user = realm.where(Person::class.java).equalTo("userId",editTextId.text.toString().trim()).findAll()
-            val user = realmManager.findAll(editTextId.text.toString().trim(), "userId", Person::class.java)
+            val user = realmManager.findAll(textViewTodo.text.toString().trim(), "userId", Person::class.java)
             Log.d(TAG,"유저 카운트  : ${user.count()}")
 
             if (user.isEmpty()) {
@@ -110,7 +110,7 @@ class LoginActivity : AppCompatActivity() {
                 Log.d(TAG,"유저 없음")
                 Toasty.error(this, "유저 아이디 없음", Toast.LENGTH_SHORT, true).show()
 
-                editTextId.text = null
+                textViewTodo.text = null
                 editTextPassword.text = null
 
             } else {
@@ -133,13 +133,13 @@ class LoginActivity : AppCompatActivity() {
                         editor.putBoolean("autoLogin", false)
                     }
 
-                    editor.putString("id", editTextId.text.toString())
+                    editor.putString("id", textViewTodo.text.toString())
                     editor.putString("password", editTextPassword.text.toString())
                     editor.apply()
 
                     Toasty.success(this, "로그인 성공", Toast.LENGTH_SHORT, true).show()
                     val intent = Intent(this, MainActivity::class.java)
-                    intent.putExtra("id", editTextId.text.toString())
+                    intent.putExtra("id", textViewTodo.text.toString())
                     startActivity(intent)
                     finish()
                     overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)

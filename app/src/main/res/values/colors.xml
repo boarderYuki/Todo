@@ -11,8 +11,9 @@
     <color name="actionBarPrimary">#353e51</color>
     <color name="textBg">#f7fff7</color>
 
-    <color name="buttonOn">#4ECDC4</color>
+    <color name="buttonOn">#4ecdc4</color>
     <color name="buttonOff">#bcbfbf</color>
+    <color name="buttonCancel">#FF6B6B</color>
 
     <color name="white">#ffffff</color>
     <color name="darkgray">#6c6c6c</color>

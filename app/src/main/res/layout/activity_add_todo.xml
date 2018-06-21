@@ -6,4 +6,77 @@
     android:layout_height="match_parent"
     tools:context=".AddTodoActivity">
 
+    <EditText
+        android:id="@+id/textViewTodo"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="32dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/custom_edit_text_bg"
+        android:ems="10"
+        android:hint="Input Task"
+        android:inputType="textPersonName"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:textAlignment="textStart"
+        android:textColor="#404040"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" /><![CDATA[
+
+    @drawable/ico_clear"
+    tools:layout_editor_absoluteX="16dp"
+    tools:layout_editor_absoluteY="147dp" />
+
+    ]]>
+
+    <View
+        android:id="@+id/cancelBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_cancel_bg"
+        app:layout_constraintBottom_toBottomOf="@+id/doneImage"
+        app:layout_constraintEnd_toStartOf="@+id/doneBg"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_chainStyle="packed"
+        app:layout_constraintStart_toStartOf="@+id/textViewTodo"
+        app:layout_constraintTop_toTopOf="@+id/doneImage" />
+
+    <View
+        android:id="@+id/doneBg"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_done_bg"
+        app:layout_constraintEnd_toEndOf="@+id/textViewTodo"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/cancelBg"
+        app:layout_constraintTop_toBottomOf="@+id/textViewTodo" />
+
+    <ImageView
+        android:id="@+id/cancelImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cancelBg"
+        app:layout_constraintEnd_toEndOf="@+id/cancelBg"
+        app:layout_constraintStart_toStartOf="@+id/cancelBg"
+        app:layout_constraintTop_toTopOf="@+id/cancelBg"
+        app:srcCompat="@drawable/ic_clear_white_48dp" />
+
+    <ImageView
+        android:id="@+id/doneImage"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/doneBg"
+        app:layout_constraintEnd_toEndOf="@+id/doneBg"
+        app:layout_constraintStart_toStartOf="@+id/doneBg"
+        app:layout_constraintTop_toTopOf="@+id/doneBg"
+        app:srcCompat="@drawable/ic_check_white_48dp" />
+
 </android.support.constraint.ConstraintLayout>

@@ -45,10 +45,10 @@ class JoinActivity : AppCompatActivity() {
 
         /** 가입 버튼 관련 옵저버
          * 오류메세지와는 관계없이 단순히 패턴검사만 하여 가입 버튼 활성화에 사용*/
-        val observableId = RxTextView.textChanges(editTextId)
+        val observableId = RxTextView.textChanges(textViewTodo)
                 .map { t -> CustomPatterns.idPattern.matcher(t).matches() }
 
-        val observableDoubleId = RxTextView.textChanges(editTextId)
+        val observableDoubleId = RxTextView.textChanges(textViewTodo)
                 .map { t -> checkDoubleIdForButton(t) }
 
         val observableEmail = RxTextView.textChanges(editTextEmail)
@@ -62,7 +62,7 @@ class JoinActivity : AppCompatActivity() {
 
         /** 패턴 오류 메세지 보여줌 오류내용은 CustomPatterns 에서 가져옴 */
         /** 아이디 체크 */
-        RxTextView.afterTextChangeEvents(editTextId)
+        RxTextView.afterTextChangeEvents(textViewTodo)
                 .skipInitialValue()
                 .map {
                     checkDoubleIdText.text = ""
@@ -155,7 +155,7 @@ class JoinActivity : AppCompatActivity() {
             /** 렘에 회원정보 저장 */
             val person = Person()
 
-            person.userId = editTextId.text.toString()
+            person.userId = textViewTodo.text.toString()
             person.email = editTextEmail.text.toString()
             person.password = editTextPassword.text.toString()
             userRealmManager.insertUser(Person::class.java, person)

@@ -9,17 +9,17 @@
     <!-- 아이디 -->
 
     <View
-        android:id="@+id/idBg"
+        android:id="@+id/doneBg"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginStart="32dp"
         android:background="@drawable/custom_edit_text_bg"
-        app:layout_constraintBottom_toBottomOf="@+id/editTextId"
-        app:layout_constraintEnd_toStartOf="@+id/editTextId"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewTodo"
+        app:layout_constraintEnd_toStartOf="@+id/textViewTodo"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintHorizontal_chainStyle="spread_inside"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTextId"
+        app:layout_constraintTop_toTopOf="@+id/textViewTodo"
         app:layout_constraintVertical_bias="1.0" />
 
 
@@ -28,16 +28,16 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:background="#cad0d8"
-        app:layout_constraintBottom_toBottomOf="@+id/idBg"
-        app:layout_constraintEnd_toEndOf="@+id/idBg"
-        app:layout_constraintStart_toStartOf="@+id/idBg"
-        app:layout_constraintTop_toTopOf="@+id/idBg"
+        app:layout_constraintBottom_toBottomOf="@+id/doneBg"
+        app:layout_constraintEnd_toEndOf="@+id/doneBg"
+        app:layout_constraintStart_toStartOf="@+id/doneBg"
+        app:layout_constraintTop_toTopOf="@+id/doneBg"
         app:srcCompat="@drawable/ico_person"
         tools:ignore="VectorDrawableCompat" />
 
 
     <EditText
-        android:id="@+id/editTextId"
+        android:id="@+id/textViewTodo"
         android:layout_width="0dp"
         android:layout_height="48dp"
         android:layout_marginEnd="32dp"
@@ -54,7 +54,7 @@
         app:layout_constraintBottom_toTopOf="@+id/editTextEmail"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/idBg"
+        app:layout_constraintStart_toEndOf="@+id/doneBg"
         app:layout_constraintTop_toBottomOf="@+id/checkDoubleIdText" />
 
 
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/emailBg"
-        app:layout_constraintTop_toBottomOf="@+id/editTextId" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTodo" />
 
     <!-- 패스워드1 -->
 
@@ -244,7 +244,7 @@
         android:layout_marginStart="8dp"
         android:textAlignment="center"
         android:textColor="@android:color/holo_red_light"
-        app:layout_constraintBottom_toTopOf="@+id/editTextId"
+        app:layout_constraintBottom_toTopOf="@+id/textViewTodo"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
