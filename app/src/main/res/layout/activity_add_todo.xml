@@ -17,7 +17,7 @@
         android:background="@drawable/custom_edit_text_bg"
         android:ems="10"
         android:hint="Input Task"
-        android:inputType="textPersonName"
+        android:inputType="text"
         android:paddingLeft="16dp"
         android:paddingRight="16dp"
         android:textAlignment="textStart"
@@ -26,13 +26,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0" /><![CDATA[
-
-    @drawable/ico_clear"
-    tools:layout_editor_absoluteX="16dp"
-    tools:layout_editor_absoluteY="147dp" />
-
-    ]]>
+        app:layout_constraintVertical_bias="0.0" />
 
     <View
         android:id="@+id/cancelBg"

@@ -4,11 +4,17 @@ import android.content.Context
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import io.indexpath.todo.R
+import io.indexpath.todo.realmDB.TodoDB
+import io.indexpath.todo.realmDB.TodoRealmManager
+import io.realm.RealmResults
+import io.realm.Sort
+import kotlinx.android.synthetic.main.fragment_todolist.*
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -30,8 +36,11 @@ class TodoListFragment : Fragment() {
     private var param1: String? = null
     private var param2: String? = null
     private var listener: OnFragmentInteractionListener? = null
+    private lateinit var adapter: TodoAdapter
+    private var userTodo: RealmResults<TodoDB>? = null
+    private var todoRealmManager = TodoRealmManager()
 
-    //private lateinit var adapter: TodoAdapter
+    var getIdFromMyPref = ""
     //private var todoRealmManager = TodoRealmManager()
     //private var userTodo: RealmResults<TodoDTO>? = null
 
@@ -53,7 +62,7 @@ class TodoListFragment : Fragment() {
 
         //val myPref = activity.getSharedPreferences("myPref", Context.MODE_PRIVATE)
         val myPref = getActivity()!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
-        val getIdFromMyPref:String = myPref.getString("id", "")
+        getIdFromMyPref = myPref.getString("id", "")
         Log.d(TAG, "inside fragment : $getIdFromMyPref")
 
         // Inflate the layout for this fragment
@@ -62,24 +71,48 @@ class TodoListFragment : Fragment() {
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-//        Realm.init(this)
 
-        /** 로그인 한 유저 정보 출력 */
-//        val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
-//        loginUser.text = "ID : ${myPref.getString("id", "")}"
-//        loginPassword.text = "PW : ${myPref.getString("password", "")}"
-//
-//        val autoLogin = myPref.getBoolean("autoLogin", false)
-//
-//        if (autoLogin) isAutoLogin.text = "자동 로그인 사용중"
-//        else isAutoLogin.text = "자동 로그인 사용안함"
+        initTodoAdapter()
 
         /** 투두리스트 가져오기 */
-//        todoLists = realm.where(TodoList::class.java).equalTo("owner", "${myPref.getString("id", "")}" ).sort("id", Sort.DESCENDING).findAll()
-
-
-
+        getTodoList()
     }
+
+    /** 투두리스트 가져오기 */
+    private fun getTodoList(){
+        try {
+            //userTodo = todoRealmManager.find(getIdFromMyPref,"owner",TodoDB::class.java)
+            userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
+            //userTodo = todoRealmManager.findAll((activity as MainDrawerActivity).getUserID()!!, "userID", TodoDTO::class.java)
+            adapter.setDataList(userTodo)
+            adapter.notifyDataSetChanged()
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
+    }
+
+    private fun initTodoAdapter(){
+        recyclerView.layoutManager = LinearLayoutManager(activity)
+        adapter = TodoAdapter(activity!!.applicationContext, userTodo, object : OnItemClickListener{
+            override fun checkBoxClick(position: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+            override fun itemDeleteClick(position: Int) {
+                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            }
+
+        })
+
+        recyclerView.adapter = adapter
+
+        if (userTodo == null){
+            return
+        }else{
+            adapter.notifyDataSetChanged()
+        }
+    }
+
 
     // TODO: Rename method, update argument and hook method into UI event
     fun onButtonPressed(uri: Uri) {

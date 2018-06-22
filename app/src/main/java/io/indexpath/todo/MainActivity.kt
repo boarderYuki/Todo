@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.Toast
 import es.dmoral.toasty.Toasty
 import io.indexpath.todo.fragment.Event
@@ -91,28 +92,40 @@ class MainActivity : AppCompatActivity() {
         var fragmentClass: Class<*> = TodoListFragment::class.java
 
         when (menuItem.itemId) {
-            R.id.db -> fragmentClass = TodoListFragment::class.java
-            R.id.event -> fragmentClass = Event::class.java
-            R.id.search -> fragmentClass = Search::class.java
-            R.id.settings -> fragmentClass = Setting::class.java
+            R.id.db -> {
+                fragmentClass = TodoListFragment::class.java
+                addTodoButton.visibility = View.VISIBLE
+            }
+            R.id.event -> {
+                fragmentClass = Event::class.java
+                addTodoButton.visibility = View.GONE
+            }
+            R.id.search -> {
+                fragmentClass = Search::class.java
+                addTodoButton.visibility = View.GONE
+            }
+            R.id.settings -> {
+                fragmentClass = Setting::class.java
+                addTodoButton.visibility = View.GONE
+            }
             //else -> fragmentClass = TodoListFragment::class.java
+            R.id.logout -> {
+                val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
+                val editor = myPref.edit()
+                editor.putBoolean("autoLogin", false)
+                editor.apply()
+
+                startActivity<LoginActivity>()
+                finish()
+                // to previous
+                overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
+
+                Toasty.success(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT, true).show()
+            }
         }
 
-        if (menuItem.itemId == R.id.logout) {
 
 
-            val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
-            val editor = myPref.edit()
-            editor.putBoolean("autoLogin", false)
-            editor.apply()
-
-            startActivity<LoginActivity>()
-            finish()
-            // to previous
-            //overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
-
-            Toasty.success(this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT, true).show()
-        }
 
         try {
             myFragment = fragmentClass.newInstance() as Fragment

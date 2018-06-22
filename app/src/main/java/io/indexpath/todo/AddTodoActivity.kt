@@ -73,7 +73,7 @@ class AddTodoActivity : AppCompatActivity() {
 
 
             if (todoInputText.text.isNotBlank()) {
-                val finalTodoText = removeExtraWhiteSpaces(todoInputText.toString())
+                val finalTodoText = removeExtraWhiteSpaces(todoInputText.getText().toString())
 
                 // 타임스탬프 미니멈 API 26 필요함
                 val current = LocalDateTime.now()
@@ -81,9 +81,6 @@ class AddTodoActivity : AppCompatActivity() {
                 val formatted = current.format(formatter)
 
                 /** 렘에 투두 목록을 유저아이디 owner로 저장 */
-
-//                realm.beginTransaction()
-//                val todoDB = realm.createObject(TodoList::class.java)
                 var todoRealmManager = TodoRealmManager()
                 var todoDB = TodoDB()
                 todoDB.id = Date()
@@ -92,14 +89,20 @@ class AddTodoActivity : AppCompatActivity() {
                 todoDB.content = finalTodoText
                 todoDB.isFinish = false
                 todoRealmManager.insertTodo(TodoDB::class.java, todoDB)
+                //setResult(Activity.RESULT_OK)
+                setResult(1)
 
-                Toasty.success(this, "새로운 목록이 추가되었습니다.", Toast.LENGTH_SHORT, true).show()
+                Log.d(TAG, finalTodoText)
+                Toasty.success(this, "새로운 목록이 추가되었습니다. $finalTodoText", Toast.LENGTH_SHORT, true).show()
+//                val i = Intent(this, MainActivity::class.java)
+//                startActivity(i)
+
                 finish()
                 overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
-//                realm.commitTransaction()
+
 
                 /** 데이타가 추가되면 리사이클뷰를 다시 그리는 것 같음 */
-//                recyclerView.adapter.notifyDataSetChanged()
+                //recyclerView.adapter.notifyDataSetChanged()
 //                customDialog.dismiss()
 
             } else {
@@ -109,6 +112,8 @@ class AddTodoActivity : AppCompatActivity() {
 
         }
         cancelButton.setOnClickListener{
+//            val i = Intent(this, MainActivity::class.java)
+//            startActivity(i)
             finish()
             overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
         }
