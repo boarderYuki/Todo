@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_bar_main.*
 import kotlinx.android.synthetic.main.header.view.*
 import org.jetbrains.anko.startActivity
-
+import org.jetbrains.anko.startActivityForResult
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,6 +30,7 @@ class MainActivity : AppCompatActivity() {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     lateinit var loginId : String
+    private  var todoListFragment: TodoListFragment = TodoListFragment()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -72,14 +73,17 @@ class MainActivity : AppCompatActivity() {
         addTodoButton.setOnClickListener {
 
             val i = Intent(this, AddTodoActivity::class.java)
-            startActivity(i)
-            //finish()
+//            startActivity(i)
+            //startActivityForResult<AddTodoActivity>(i,1)
+            startActivityForResult<AddTodoActivity>(1)
             overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
 
             Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
         }
 
     }
+
+
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (mToggle!!.onOptionsItemSelected(item)) {
@@ -153,9 +157,31 @@ class MainActivity : AppCompatActivity() {
     }
 
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+        if (resultCode == RESULT_OK) {
+            Log.d(TAG, "onActivityResult")
+            todoListFragment.onActivityResult(requestCode, resultCode, data)
+        }
+
+
+//        if (requestCode == 1) {
+//            if (resultCode == RESULT_OK) {
+//                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner", TodoDB::class.java).sort("id", Sort.DESCENDING)
+//                adapter.setDataList(userTodo)
+//                adapter.notifyDataSetChanged()
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
+//        }
+    }
+
     fun getUserID() : String? {
         return loginId
     }
+
+
 
     companion object {
         private val TAG = "Todo"

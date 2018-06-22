@@ -1,7 +1,7 @@
 package io.indexpath.todo
 
+import android.app.Activity
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
@@ -89,8 +89,8 @@ class AddTodoActivity : AppCompatActivity() {
                 todoDB.content = finalTodoText
                 todoDB.isFinish = false
                 todoRealmManager.insertTodo(TodoDB::class.java, todoDB)
-                //setResult(Activity.RESULT_OK)
-                setResult(1)
+                setResult(Activity.RESULT_OK)
+
 
                 Log.d(TAG, finalTodoText)
                 Toasty.success(this, "새로운 목록이 추가되었습니다. $finalTodoText", Toast.LENGTH_SHORT, true).show()
@@ -128,8 +128,8 @@ class AddTodoActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        val intent = Intent(this, MainActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, MainActivity::class.java)
+//        startActivity(intent)
         finish()
         overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
     }

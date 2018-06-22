@@ -1,6 +1,8 @@
 package io.indexpath.todo.fragment
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -15,6 +17,8 @@ import io.indexpath.todo.realmDB.TodoRealmManager
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_todolist.*
+
+
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -81,9 +85,7 @@ class TodoListFragment : Fragment() {
     /** 투두리스트 가져오기 */
     private fun getTodoList(){
         try {
-            //userTodo = todoRealmManager.find(getIdFromMyPref,"owner",TodoDB::class.java)
             userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
-            //userTodo = todoRealmManager.findAll((activity as MainDrawerActivity).getUserID()!!, "userID", TodoDTO::class.java)
             adapter.setDataList(userTodo)
             adapter.notifyDataSetChanged()
         }catch (e: NullPointerException){
@@ -112,6 +114,7 @@ class TodoListFragment : Fragment() {
             adapter.notifyDataSetChanged()
         }
     }
+
 
 
     // TODO: Rename method, update argument and hook method into UI event
@@ -173,5 +176,24 @@ class TodoListFragment : Fragment() {
 //        val realm = Realm.getInstance(config)
 //        var todoLists : RealmResults<TodoList>? = null
 
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+
+
+        if (requestCode == 1) {
+
+            if (resultCode == Activity.RESULT_OK) {
+                Log.d(TAG, "플래그 먼트 onActivityResult")
+
+//                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
+//
+//                adapter.setDataList(userTodo)
+//                adapter.notifyDataSetChanged()
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
     }
 }
