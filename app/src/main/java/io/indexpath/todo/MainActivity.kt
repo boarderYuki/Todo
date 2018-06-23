@@ -1,5 +1,6 @@
 package io.indexpath.todo
 
+
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -30,29 +31,25 @@ class MainActivity : AppCompatActivity() {
     private var mDrawerLayout: DrawerLayout? = null
     private var mToggle: ActionBarDrawerToggle? = null
     lateinit var loginId : String
-    private  var todoListFragment: TodoListFragment = TodoListFragment()
+    private lateinit var todoListFragment: TodoListFragment
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_main)
 
-//        var intent = intent
-//        loginId = intent.getStringExtra("id")
-//        Log.d(TAG, "MainActivity : $loginId")
         val myPref = getSharedPreferences("myPref", Context.MODE_PRIVATE)
         val getIdFromMyPref:String = myPref.getString("id", "")
-        val getPasswordFromMyPref = myPref.getString("password", "")
 
-        //mDrawerLayout = findViewById<View>(R.id.drawer)
         mDrawerLayout = drawer
         mToggle = ActionBarDrawerToggle(this, mDrawerLayout, R.string.open, R.string.close)
         mDrawerLayout!!.addDrawerListener(mToggle!!)
         val nvDrawer = nv as NavigationView
         mToggle!!.syncState()
-        //supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         val fragmentManager = supportFragmentManager
+        todoListFragment = TodoListFragment()
         fragmentManager.beginTransaction().replace(R.id.flcontent, TodoListFragment()).commit()
         setupDrawerContent(nvDrawer)
 
@@ -67,22 +64,23 @@ class MainActivity : AppCompatActivity() {
             println(e.message)
         }
 
-
+        //var intentBundle = Bundle()
 
 
         addTodoButton.setOnClickListener {
+//            val i = Intent(this, AddTodoActivity::class.java)
+//            startActivityForResult(i,1)
 
-            val i = Intent(this, AddTodoActivity::class.java)
-//            startActivity(i)
-            //startActivityForResult<AddTodoActivity>(i,1)
             startActivityForResult<AddTodoActivity>(1)
-            overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
+            //startActivityForResult(i,1,intentBundle)
 
+            //startActivity<AddTodoActivity>(1)
+            //finish()
+            overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
             Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
         }
 
     }
-
 
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -128,9 +126,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
 
-
-
-
         try {
             myFragment = fragmentClass.newInstance() as Fragment
         } catch (e: Exception) {
@@ -140,10 +135,7 @@ class MainActivity : AppCompatActivity() {
         val fragmentManager = supportFragmentManager
         fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).commit()
         menuItem.isChecked = true
-        //title = menuItem.title
-        //findViewById<TextView>(R.id.customTitle).setText(menuItem.title)
         customTitle.setText(menuItem.title)
-
 
         mDrawerLayout!!.closeDrawers()
 
@@ -158,30 +150,26 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//        if(resultCode != Activity.RESULT_OK){
+//            return
+//        }
 
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult")
             todoListFragment.onActivityResult(requestCode, resultCode, data)
         }
-
-
-//        if (requestCode == 1) {
-//            if (resultCode == RESULT_OK) {
-//                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner", TodoDB::class.java).sort("id", Sort.DESCENDING)
-//                adapter.setDataList(userTodo)
-//                adapter.notifyDataSetChanged()
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
-//        }
     }
 
     fun getUserID() : String? {
         return loginId
     }
 
+//    private lateinit var adapter: TodoAdapter
+//    private var userTodo: RealmResults<TodoDB>? = null
+    override fun onResume() {
+        super.onResume()
 
+    }
 
     companion object {
         private val TAG = "Todo"

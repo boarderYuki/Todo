@@ -3,12 +3,14 @@ package io.indexpath.todo
 import android.app.Activity
 import android.content.Context
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v7.app.ActionBar
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import es.dmoral.toasty.Toasty
+import io.indexpath.todo.fragment.TodoListFragment
 import io.indexpath.todo.realmDB.TodoDB
 import io.indexpath.todo.realmDB.TodoRealmManager
 import kotlinx.android.synthetic.main.activity_add_todo.*
@@ -44,7 +46,11 @@ class AddTodoActivity : AppCompatActivity() {
 
         initListener()
 
+
     }
+
+
+
 
 
 //    private fun cancelClicked() {
@@ -97,12 +103,37 @@ class AddTodoActivity : AppCompatActivity() {
 //                val i = Intent(this, MainActivity::class.java)
 //                startActivity(i)
 
+//                val currentFragment = getActivity(this)!!.getFragmentManager().findFragmentById(R.id.frameLayout)
+//                if (currentFragment == TodoListFragment::class.java) {
+//                    val fragTransaction = (getActivity())!!.getFragmentManager().beginTransaction()
+//                    fragTransaction.detach(currentFragment)
+//                    fragTransaction.attach(currentFragment)
+//                    fragTransaction.commit()
+//                }
+
+                //val currentFragment = getActivity().getFragmentManager().findFragmentById(R.id.frameLayout)
+                val fragmentManager = supportFragmentManager
+                //fragmentManager.beginTransaction().replace(R.id.flcontent, myFragment).setTransitionStyle(FragmentTransaction.TRANSIT_FRAGMENT_FADE).commit()
+
+
+
+
+                var myFragment = (TodoListFragment::class.java).newInstance() as Fragment
+//                val ft = fragmentManager.beginTransaction()
+
+                //fragmentManager.beginTransaction().detach(myFragment).attach(myFragment).commit()
+                //fragmentManager.beginTransaction().detach(currentFragment).attach(currentFragment).commit()
+
+                //getSupportFragmentManager().beginTransaction().detach(myFragment).commitNowAllowingStateLoss();
+                //getSupportFragmentManager().beginTransaction().attach(myFragment).commitAllowingStateLoss();
                 finish()
+
                 overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
 
 
                 /** 데이타가 추가되면 리사이클뷰를 다시 그리는 것 같음 */
-                //recyclerView.adapter.notifyDataSetChanged()
+
+//                recyclerView.adapter.notifyDataSetChanged()
 //                customDialog.dismiss()
 
             } else {
@@ -130,9 +161,13 @@ class AddTodoActivity : AppCompatActivity() {
         super.onBackPressed()
 //        val intent = Intent(this, MainActivity::class.java)
 //        startActivity(intent)
+        Toasty.error(this, "디바이스 백버튼 클릭", Toast.LENGTH_SHORT, true).show()
+        //startActivity<MainActivity>()
         finish()
         overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
     }
+
+
 
     // 공백 검사
     fun removeExtraWhiteSpaces(value: String): String {

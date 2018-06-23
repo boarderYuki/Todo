@@ -3,7 +3,6 @@ package io.indexpath.todo.fragment
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -37,9 +36,10 @@ private const val ARG_PARAM2 = "param2"
  */
 class TodoListFragment : Fragment() {
     // TODO: Rename and change types of parameters
+    private var mParam1: Bundle? = null
     private var param1: String? = null
     private var param2: String? = null
-    private var listener: OnFragmentInteractionListener? = null
+    //private var listener: OnFragmentInteractionListener? = null
     private lateinit var adapter: TodoAdapter
     private var userTodo: RealmResults<TodoDB>? = null
     private var todoRealmManager = TodoRealmManager()
@@ -50,47 +50,27 @@ class TodoListFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+        if (arguments != null) {
+            mParam1 = arguments!!.getBundle(ARG_PARAM1)
         }
 
-
-//        Log.d(TAG, "DrawerActiyity ${(activity as MainActivity).getUserID()!!}")
+        val myPref = getActivity()!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
+        getIdFromMyPref = myPref.getString("id", "")
+        Log.d(TAG, "inside fragment : $getIdFromMyPref")
 
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-
-
-        //val myPref = activity.getSharedPreferences("myPref", Context.MODE_PRIVATE)
-        val myPref = getActivity()!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
-        getIdFromMyPref = myPref.getString("id", "")
-        Log.d(TAG, "inside fragment : $getIdFromMyPref")
-
         // Inflate the layout for this fragment
+
         return inflater.inflate(R.layout.fragment_todolist, container, false)
     }
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         initTodoAdapter()
-
-        /** 투두리스트 가져오기 */
         getTodoList()
-    }
-
-    /** 투두리스트 가져오기 */
-    private fun getTodoList(){
-        try {
-            userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
-            adapter.setDataList(userTodo)
-            adapter.notifyDataSetChanged()
-        }catch (e: NullPointerException){
-            e.printStackTrace()
-        }
     }
 
     private fun initTodoAdapter(){
@@ -115,39 +95,6 @@ class TodoListFragment : Fragment() {
         }
     }
 
-
-
-    // TODO: Rename method, update argument and hook method into UI event
-    fun onButtonPressed(uri: Uri) {
-        listener?.onFragmentInteraction(uri)
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        listener = null
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments]
-     * (http://developer.android.com/training/basics/fragments/communicating.html)
-     * for more information.
-     */
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
     companion object {
         /**
          * Use this factory method to create a new instance of
@@ -158,42 +105,81 @@ class TodoListFragment : Fragment() {
          * @return A new instance of fragment Dashboard.
          */
         // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-                TodoListFragment().apply {
-                    arguments = Bundle().apply {
-                        putString(ARG_PARAM1, param1)
-                        putString(ARG_PARAM2, param2)
-                    }
-                }
-
+        fun newInstance(args: Bundle): TodoListFragment {
+            val fragment = TodoListFragment()
+//            val args = Bundle()
+//            args.putString(ARG_PARAM1, param1)
+            fragment.arguments = args
+            return fragment
+        }
 
         private val TAG = "Todo"
 
-        var loginUserName : String = ""
+    }
 
-//        val config = RealmConfiguration.Builder().name("person.realm").build()
-//        val realm = Realm.getInstance(config)
-//        var todoLists : RealmResults<TodoList>? = null
-
+    /** 투두리스트 가져오기 */
+    private fun getTodoList(){
+        try {
+            userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
+            adapter.setDataList(userTodo)
+            adapter.notifyDataSetChanged()
+        }catch (e: NullPointerException){
+            e.printStackTrace()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
+        if(resultCode != Activity.RESULT_OK){
+            return
+        }
 
-        if (requestCode == 1) {
+        when (requestCode){
+            1 -> {
+                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
+                adapter.setDataList(userTodo)
+                adapter.notifyDataSetChanged()
+            }
+        }
 
-            if (resultCode == Activity.RESULT_OK) {
-                Log.d(TAG, "플래그 먼트 onActivityResult")
 
+//        if (requestCode == 1) {
+//
+//            if (resultCode == Activity.RESULT_OK) {
+//                Log.d(TAG, "플래그 먼트 onActivityResult")
+//
 //                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
+//
+////                val ft = getFragmentManager()?.beginTransaction()
+////                ft!!.detach(this).attach(this).commit()
+//
+////val ft = getFragmentManager()!!.beginTransaction()
+////                ft.attach(this).commit()
+//                //adapter = recyclerView.adapter as TodoAdapter
+//
+//
+////                if (adapter == null) {
+////                    Log.d(TAG, "어댑터 없음")
+////                } else {
+////                    Log.d(TAG, "어댑터 있음")
+////                }
 //
 //                adapter.setDataList(userTodo)
 //                adapter.notifyDataSetChanged()
-            }
-            if (resultCode == Activity.RESULT_CANCELED) {
-                //Write your code if there's no result
-            }
-        }
+//            }
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                //Write your code if there's no result
+//            }
+//        }
     }
+
+    override fun onAttach(context: Context?) {
+        super.onAttach(context)
+
+    }
+
+
+
+
+
 }
