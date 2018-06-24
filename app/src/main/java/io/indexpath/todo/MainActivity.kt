@@ -1,6 +1,7 @@
 package io.indexpath.todo
 
 
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -50,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
         val fragmentManager = supportFragmentManager
         todoListFragment = TodoListFragment()
-        fragmentManager.beginTransaction().replace(R.id.flcontent, TodoListFragment()).commit()
+        fragmentManager.beginTransaction().replace(R.id.flcontent, todoListFragment).commit()
         setupDrawerContent(nvDrawer)
 
         val headerView = nv.getHeaderView(0)
@@ -150,12 +151,13 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//        if(resultCode != Activity.RESULT_OK){
-//            return
-//        }
+        if(resultCode != Activity.RESULT_OK){
+            return
+        }
 
         if (resultCode == RESULT_OK) {
             Log.d(TAG, "onActivityResult")
+            //todoListFragment = TodoListFragment()
             todoListFragment.onActivityResult(requestCode, resultCode, data)
         }
     }

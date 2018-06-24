@@ -36,14 +36,17 @@ class LoginActivity : AppCompatActivity() {
 //            println(e.message)
 //        }
 
-
+        Realm.init(this)
         setContentView(R.layout.activity_login)
 
 
 
 
 
-        Realm.init(this)
+
+
+        Log.d(TAG, "path: " + realmManager.realm.path)
+
 //        val config = RealmConfiguration.Builder().name("person.realm").build()
 //        realm = Realm.getInstance(config)
         //getLastMember()
@@ -155,33 +158,16 @@ class LoginActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
         }
 
+
+
     }
 
-    /** 가장 최근에 가입한 회원 정보 */
-//    private fun getLastMember() {
-//
-//        /** 렘 읽기 */
-//        val  allPersons = realm.where(Person::class.java).findAll()
-//
-//        if (!allPersons.isEmpty()) {
-//            allPersons.forEach { person ->
-//                println("Person: ${person.userId} : ${person.email} ${person.password}")
-//            }
-//
-//            val lastPerson = allPersons.last()
-//
-//            val name = lastPerson?.userId
-//            val email = lastPerson?.email
-//            val password = lastPerson?.password
-//
-//            userNick.text = "User ID : ${name}"
-//            userEmail.text = "User Email : ${email}"
-//            userPassword.text = "User Password : ${password}"
-//        }
-//
-//    }
+    override fun onDestroy() {
+        super.onDestroy()
+    }
 
     companion object {
         private val TAG = "Todo"
     }
+
 }

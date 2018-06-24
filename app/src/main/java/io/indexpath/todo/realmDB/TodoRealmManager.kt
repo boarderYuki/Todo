@@ -1,5 +1,6 @@
 package io.indexpath.todo.realmDB
 
+import android.util.Log
 import io.realm.RealmConfiguration
 import io.realm.RealmModel
 import io.realm.RealmResults
@@ -16,6 +17,7 @@ import io.realm.RealmResults
 class TodoRealmManager : RealmManager("TodoDTO.realm") {
 
     fun <T: RealmModel, E: TodoDB>insertTodo(targetDto: Class<T>, dto: E){
+
 
         realm.beginTransaction()
 

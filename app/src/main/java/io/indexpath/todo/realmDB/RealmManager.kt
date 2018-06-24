@@ -24,6 +24,7 @@ open class RealmManager(val name: String) {
         Realm.getInstance(config)
     }
 
+
     /**
      * Realm에 저장된 모든 데이터 삭제
      * */

@@ -13,6 +13,7 @@ import android.view.ViewGroup
 import io.indexpath.todo.R
 import io.indexpath.todo.realmDB.TodoDB
 import io.indexpath.todo.realmDB.TodoRealmManager
+import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_todolist.*
@@ -41,18 +42,17 @@ class TodoListFragment : Fragment() {
     private var param2: String? = null
     //private var listener: OnFragmentInteractionListener? = null
     private lateinit var adapter: TodoAdapter
-    private var userTodo: RealmResults<TodoDB>? = null
     private var todoRealmManager = TodoRealmManager()
-
+    private var userTodo: RealmResults<TodoDB>? = null
     var getIdFromMyPref = ""
-    //private var todoRealmManager = TodoRealmManager()
-    //private var userTodo: RealmResults<TodoDTO>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
             mParam1 = arguments!!.getBundle(ARG_PARAM1)
         }
+
+
 
         val myPref = getActivity()!!.getSharedPreferences("myPref", Context.MODE_PRIVATE)
         getIdFromMyPref = myPref.getString("id", "")
@@ -130,10 +130,11 @@ class TodoListFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
+
         if(resultCode != Activity.RESULT_OK){
             return
         }
-
+        //initTodoAdapter()
         when (requestCode){
             1 -> {
                 userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)

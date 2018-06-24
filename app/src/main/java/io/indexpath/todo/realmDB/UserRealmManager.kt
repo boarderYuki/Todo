@@ -10,9 +10,14 @@ class UserRealmManager : RealmManager("UserDTO.realm") {
     fun <T: RealmModel, E: Person>insertUser(targetDto: Class<T>, rPerson: E){
 
         realm.beginTransaction()
-        val number = realm.where(targetDto).count() + 1
+        val maxId = realm.where(targetDto).max("id")
+        val nextId = if (maxId == null) 1 else maxId.toInt() + 1
 
-        val person = realm.createObject(targetDto, number)
+        val person = realm.createObject(targetDto, nextId)
+
+        //val number = realm.where(targetDto).count() + 1
+
+        //val person = realm.createObject(targetDto, number)
 
         if (person is Person) {
             person.userId = rPerson.userId

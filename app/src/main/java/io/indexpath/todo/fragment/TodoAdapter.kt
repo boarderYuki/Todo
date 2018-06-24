@@ -24,14 +24,15 @@ interface OnItemClickListener {
     fun itemDeleteClick(position: Int)
 }
 
-class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listener: OnItemClickListener) : RecyclerView.Adapter<TodoAdapter.ViewHolder>() {
 
+    private val inflater: LayoutInflater = LayoutInflater.from(context)
     private var todoLists : MutableList<TodoDB>? = null
 
     /**　뷰홀더 생성 */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        var view = LayoutInflater.from(context).inflate(R.layout.cell_layout, parent,false)
-        return CustomViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        var view = inflater.inflate(R.layout.cell_layout, parent,false)
+        return ViewHolder(view)
     }
 
     /**　리스트 갯수 */
@@ -40,14 +41,14 @@ class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listene
     }
 
     /**　바인딩 */
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        var view = holder as CustomViewHolder
-        view.createDateText!!.text = todoLists!![position]!!.cDate
-        view.textview!!.text = todoLists!![position]!!.content.toString()
-        view.cellCheckBox!!.setChecked(todoLists!![position]!!.isFinish)
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        //var view = holder as ViewHolder
+        holder.createDateText!!.text = todoLists!![position]!!.cDate
+        holder.textview!!.text = todoLists!![position]!!.content.toString()
+        holder.cellCheckBox!!.setChecked(todoLists!![position]!!.isFinish)
 
-        var cb = view.cellCheckBox
-        var btnDel = view.btnDel
+        var cb = holder.cellCheckBox
+        var btnDel = holder.btnDel
 
         /** 어댑터로 연결 됨 */
         cb!!.setOnClickListener {
@@ -70,7 +71,7 @@ class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listene
     }
 
     /**　뷰홀더 연결 */
-    class CustomViewHolder(view: View?) : RecyclerView.ViewHolder(view) {
+    class ViewHolder(view: View?) : RecyclerView.ViewHolder(view) {
         var createDateText : TextView? = null
         var textview : TextView? = null
         var cellCheckBox : CheckBox? = null
