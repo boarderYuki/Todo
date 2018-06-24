@@ -1,11 +1,15 @@
 package io.indexpath.todo
 
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import android.util.Patterns
 import android.view.MenuItem
+import android.widget.ImageView
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
 import es.dmoral.toasty.Toasty
@@ -19,13 +23,19 @@ import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_join.*
 import org.jetbrains.anko.startActivity
+import java.io.ByteArrayOutputStream
+import java.util.*
 import java.util.concurrent.TimeUnit
+
+
 
 class JoinActivity : AppCompatActivity() {
 
     //private lateinit var userRealmManager: UserRealmManager
 
     var userRealmManager = UserRealmManager()
+    var imageIdList = arrayOf<Int>(
+            R.drawable.random_image_01, R.drawable.random_image_02, R.drawable.random_image_03, R.drawable.random_image_04, R.drawable.random_image_05, R.drawable.random_image_06)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,19 +43,21 @@ class JoinActivity : AppCompatActivity() {
         setContentView(R.layout.activity_join)
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        //userRealmManager = UserRealmManager()
+        // 기본 프로필 이미지
+        val num = Random().nextInt(imageIdList.size)
+        profile_pic.setImageResource(imageIdList[num])
+        var profileImageToSave = ImageView(this)
+        profileImageToSave.setImageResource(imageIdList[num])
+        Log.d(TAG, "이미지 갯수 : ${imageIdList.size} 넘 : $num")
 
 
 
-//        Realm.init(this)
-//        val config = RealmConfiguration.Builder().name("person.realm").build()
-//        val realm = Realm.getInstance(config)
-//        Log.d(TAG, "path: " + realm.path)
+
 
 
         /** 가입 버튼 관련 옵저버
          * 오류메세지와는 관계없이 단순히 패턴검사만 하여 가입 버튼 활성화에 사용*/
-        val observableId = RxTextView.textChanges(todoInputText)
+        val observableId = RxTextView.textChanges(this!!.todoInputText)
                 .map { t -> CustomPatterns.idPattern.matcher(t).matches() }
 
         val observableDoubleId = RxTextView.textChanges(todoInputText)
@@ -153,11 +165,18 @@ class JoinActivity : AppCompatActivity() {
         buttonLogOut.setOnClickListener {
 
             /** 렘에 회원정보 저장 */
+            val bitmap = (profileImageToSave.drawable as BitmapDrawable).bitmap
+            val stream = ByteArrayOutputStream()
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
+            val profileImage = stream.toByteArray()
+            Log.d(TAG, "profileImage 갯수 : $profileImage")
+
             val person = Person()
 
             person.userId = todoInputText.text.toString()
             person.email = editTextEmail.text.toString()
             person.password = editTextPassword.text.toString()
+            person.profilePic = profileImage
             userRealmManager.insertUser(Person::class.java, person)
 
             Toasty.success(this, "저장 성공", Toast.LENGTH_SHORT, true).show();

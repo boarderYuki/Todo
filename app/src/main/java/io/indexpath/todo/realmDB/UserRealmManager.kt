@@ -23,6 +23,7 @@ class UserRealmManager : RealmManager("UserDTO.realm") {
             person.userId = rPerson.userId
             person.email = rPerson.email
             person.password = rPerson.password
+            person.profilePic = rPerson.profilePic
         }
 
         realm.commitTransaction()

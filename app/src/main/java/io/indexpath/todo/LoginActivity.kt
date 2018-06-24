@@ -132,6 +132,7 @@ class LoginActivity : AppCompatActivity() {
 
                     editor.putString("id", todoInputText.text.toString())
                     editor.putString("password", editTextPassword.text.toString())
+
                     editor.apply()
 
                     Toasty.success(this, "로그인 성공", Toast.LENGTH_SHORT, true).show()

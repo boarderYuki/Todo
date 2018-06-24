@@ -4,6 +4,7 @@ package io.indexpath.todo
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.support.design.widget.NavigationView
 import android.support.v4.app.Fragment
@@ -20,11 +21,15 @@ import io.indexpath.todo.fragment.Event
 import io.indexpath.todo.fragment.Search
 import io.indexpath.todo.fragment.Setting
 import io.indexpath.todo.fragment.TodoListFragment
+import io.indexpath.todo.realmDB.Person
+import io.indexpath.todo.realmDB.UserRealmManager
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.custom_bar_main.*
 import kotlinx.android.synthetic.main.header.view.*
 import org.jetbrains.anko.startActivity
 import org.jetbrains.anko.startActivityForResult
+
+
 
 
 class MainActivity : AppCompatActivity() {
@@ -33,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private var mToggle: ActionBarDrawerToggle? = null
     lateinit var loginId : String
     private lateinit var todoListFragment: TodoListFragment
-
+    var realmManager = UserRealmManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +61,27 @@ class MainActivity : AppCompatActivity() {
 
         val headerView = nv.getHeaderView(0)
         headerView.headerId.text = getIdFromMyPref
+
+        val user = realmManager.findAll(getIdFromMyPref, "userId", Person::class.java)
+
+
+//        val byteArray: ByteArray? = null //need to initialize it
+//        val profilePic = user[0]?.profilePic.(byteArray)
+//        profilePic.getImage()
+
+        val data = user[0]!!.profilePic
+//        val bis = ByteArrayInputStream(data)
+//        val bImage2 = ImageIO.read(bis)
+//        ImageIO.write(bImage2, "jpg", File("output.jpg"))
+//        println("image created")
+
+        val bmp = BitmapFactory.decodeByteArray(data,0, data!!.size)
+        //val imageView = ImageView(this@ConversationsActivity)
+
+        headerView.headerProfilePic.setImageBitmap(bmp)
+        //imageView.setImageBitmap(bmp)
+
+
 
         try {
             supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM

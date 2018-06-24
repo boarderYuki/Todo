@@ -18,6 +18,7 @@ open class Person: RealmObject() {
     var userId: String? = null
     var email: String? = null
     var password: String? = null
+    var profilePic: ByteArray? = null
     //var todoList: RealmList<TodoList> = RealmList()
 }
 
