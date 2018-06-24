@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.CheckBox
 import android.widget.ImageButton
 import android.widget.TextView
@@ -75,13 +76,13 @@ class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listene
         var createDateText : TextView? = null
         var textview : TextView? = null
         var cellCheckBox : CheckBox? = null
-        var btnDel : ImageButton? = null
+        var btnDel : Button? = null
 
         init {
             createDateText = view!!.findViewById(R.id.createDate)
-            textview = view!!.findViewById(R.id.todoContent)
+            textview = view.findViewById(R.id.todoContent)
             cellCheckBox = view.findViewById(R.id.cellCheckBox)
-            btnDel = view!!.findViewById(R.id.btnDel)
+            btnDel = view.findViewById(R.id.btnDel)
         }
 
     }
