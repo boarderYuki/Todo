@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.CheckBox
-import android.widget.ImageButton
 import android.widget.TextView
 import io.indexpath.todo.R
 import io.indexpath.todo.realmDB.TodoDB
@@ -21,7 +20,7 @@ import io.indexpath.todo.realmDB.TodoDB
 
 /** 바인더와 어댑터를 연결 */
 interface OnItemClickListener {
-    fun checkBoxClick(position: Int)
+    fun checkBoxClick(isFinish: Boolean, position: Int)
     fun itemDeleteClick(position: Int)
 }
 
@@ -53,7 +52,7 @@ class TodoAdapter(val context: Context, val dataList: List<TodoDB>?, val listene
 
         /** 어댑터로 연결 됨 */
         cb!!.setOnClickListener {
-            listener.checkBoxClick(position)
+            listener.checkBoxClick( cb.isChecked, position)
             notifyDataSetChanged()
         }
 

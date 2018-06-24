@@ -13,12 +13,10 @@ import android.view.ViewGroup
 import io.indexpath.todo.R
 import io.indexpath.todo.realmDB.TodoDB
 import io.indexpath.todo.realmDB.TodoRealmManager
-import io.realm.Realm
 import io.realm.RealmResults
 import io.realm.Sort
 import kotlinx.android.synthetic.main.fragment_todolist.*
-
-
+import org.jetbrains.anko.support.v4.alert
 
 
 // TODO: Rename parameter arguments, choose names that match
@@ -76,12 +74,39 @@ class TodoListFragment : Fragment() {
     private fun initTodoAdapter(){
         recyclerView.layoutManager = LinearLayoutManager(activity)
         adapter = TodoAdapter(activity!!.applicationContext, userTodo, object : OnItemClickListener{
-            override fun checkBoxClick(position: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            override fun checkBoxClick(isFinish: Boolean, position: Int) {
+                userTodo = todoRealmManager.updateCheckUseData(isFinish, position, userTodo!!)
+                adapter.setDataList(userTodo)
+                adapter.notifyDataSetChanged()
+//                realm.beginTransaction()
+//                if (!todoLists!![position]!!.isFinish) {
+//                    todoLists!![position]!!.isFinish = true
+//                    Log.d(TAG, " 체크박스 선택 : ")
+//                } else {
+//                    todoLists!![position]!!.isFinish = false
+//                    Log.d(TAG, " 체크박스 해제 : ")
+//                }
+//                realm.commitTransaction()
             }
 
             override fun itemDeleteClick(position: Int) {
-                TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+                alert(title = "삭제하시겠습니까?", message = "") {
+                    positiveButton("OK", {
+                        userTodo = todoRealmManager.removeAt(position, userTodo!!)
+                        adapter.setDataList(userTodo)
+                        adapter.notifyDataSetChanged()
+//                        realm.beginTransaction()
+//                        todoLists!![position]!!.deleteFromRealm()
+//                        realm.commitTransaction()
+//                        recyclerView.adapter.notifyDataSetChanged()
+                        //Toasty.success(this, "새로운 목록이 추가되었습니다. $finalTodoText", Toast.LENGTH_SHORT, true).show()
+
+                    })
+
+                    negativeButton("CANCEL") {
+                        it.dismiss()
+                    }
+                }.show()
             }
 
         })
@@ -144,34 +169,6 @@ class TodoListFragment : Fragment() {
         }
 
 
-//        if (requestCode == 1) {
-//
-//            if (resultCode == Activity.RESULT_OK) {
-//                Log.d(TAG, "플래그 먼트 onActivityResult")
-//
-//                userTodo = todoRealmManager.findAll(getIdFromMyPref,"owner",TodoDB::class.java).sort("id", Sort.DESCENDING)
-//
-////                val ft = getFragmentManager()?.beginTransaction()
-////                ft!!.detach(this).attach(this).commit()
-//
-////val ft = getFragmentManager()!!.beginTransaction()
-////                ft.attach(this).commit()
-//                //adapter = recyclerView.adapter as TodoAdapter
-//
-//
-////                if (adapter == null) {
-////                    Log.d(TAG, "어댑터 없음")
-////                } else {
-////                    Log.d(TAG, "어댑터 있음")
-////                }
-//
-//                adapter.setDataList(userTodo)
-//                adapter.notifyDataSetChanged()
-//            }
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                //Write your code if there's no result
-//            }
-//        }
     }
 
     override fun onAttach(context: Context?) {

@@ -14,7 +14,6 @@ import io.indexpath.todo.realmDB.Person
 import io.indexpath.todo.realmDB.UserRealmManager
 import io.reactivex.Observable
 import io.reactivex.functions.BiFunction
-import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_login.*
 import org.jetbrains.anko.startActivity
 
@@ -36,13 +35,8 @@ class LoginActivity : AppCompatActivity() {
 //            println(e.message)
 //        }
 
-        Realm.init(this)
+        //Realm.init(this)
         setContentView(R.layout.activity_login)
-
-
-
-
-
 
 
         Log.d(TAG, "path: " + realmManager.realm.path)
