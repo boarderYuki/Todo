@@ -4,7 +4,9 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.util.Patterns
@@ -24,6 +26,7 @@ import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_join.*
 import org.jetbrains.anko.startActivity
 import java.io.ByteArrayOutputStream
+import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
@@ -37,6 +40,10 @@ class JoinActivity : AppCompatActivity() {
     var imageIdList = arrayOf<Int>(
             R.drawable.random_image_01, R.drawable.random_image_02, R.drawable.random_image_03, R.drawable.random_image_04, R.drawable.random_image_05, R.drawable.random_image_06)
 
+    private val GALLERY = 1
+    private val CAMERA = 2
+    var profileImageToSave : ImageView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         //supportActionBar!!.setTitle("MEMBER REGISTRATION")
@@ -44,10 +51,12 @@ class JoinActivity : AppCompatActivity() {
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
         // 기본 프로필 이미지
+
         val num = Random().nextInt(imageIdList.size)
         profile_pic.setImageResource(imageIdList[num])
-        var profileImageToSave = ImageView(this)
-        profileImageToSave.setImageResource(imageIdList[num])
+        //var profileImageToSave = ImageView(this)
+        profileImageToSave = ImageView(this)
+        profileImageToSave!!.setImageResource(imageIdList[num])
         Log.d(TAG, "이미지 갯수 : ${imageIdList.size} 넘 : $num")
 
 
@@ -165,7 +174,7 @@ class JoinActivity : AppCompatActivity() {
         buttonLogOut.setOnClickListener {
 
             /** 렘에 회원정보 저장 */
-            val bitmap = (profileImageToSave.drawable as BitmapDrawable).bitmap
+            val bitmap = (profileImageToSave!!.drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val profileImage = stream.toByteArray()
@@ -179,7 +188,7 @@ class JoinActivity : AppCompatActivity() {
             person.profilePic = profileImage
             userRealmManager.insertUser(Person::class.java, person)
 
-            Toasty.success(this, "저장 성공", Toast.LENGTH_SHORT, true).show();
+            Toasty.success(this, "저장 성공", Toast.LENGTH_SHORT, true).show()
 
             startActivity<LoginActivity>()
             finish()
@@ -187,7 +196,124 @@ class JoinActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
         }
 
+
+        /** 프로파일 이미지 변경*/
+        changeProfileButton.setOnClickListener {
+            showPictureDialog()
+            Toasty.success(this, "설정버튼클릭", Toast.LENGTH_SHORT, true).show()
+        }
+
     }
+
+    private fun showPictureDialog() {
+        val pictureDialog = AlertDialog.Builder(this)
+        pictureDialog.setTitle("Select Action")
+        val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
+        pictureDialog.setItems(pictureDialogItems
+        ) { dialog, which ->
+            when (which) {
+                0 -> choosePhotoFromGallary()
+                1 -> {
+                    takePhotoFromCamera()
+
+                }
+            }
+        }
+        pictureDialog.show()
+
+    }
+
+    private fun choosePhotoFromGallary() {
+        val galleryIntent = Intent(Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+
+        startActivityForResult(galleryIntent, GALLERY)
+
+//        val intent = Intent(Intent.ACTION_PICK)
+//        intent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+//        intent.type = "image/*"
+//        startActivityForResult(intent, GALLERY)
+
+    }
+
+    private fun takePhotoFromCamera() {
+        val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+        startActivityForResult(intent, CAMERA)
+    }
+
+    public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
+
+        super.onActivityResult(requestCode, resultCode, data)
+        /* if (resultCode == this.RESULT_CANCELED)
+         {
+         return
+         }*/
+        if (requestCode == GALLERY)
+        {
+            if (data != null)
+            {
+                val contentURI = data!!.data
+                try
+                {
+                    val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
+                    //val path = saveImage(bitmap)
+                    //Toast.makeText(this@MainActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+                    profile_pic.setImageBitmap(bitmap)
+                    profileImageToSave!!.setImageBitmap(bitmap)
+
+                }
+                catch (e: IOException) {
+                    e.printStackTrace()
+                    //Toast.makeText(this@MainActivity, "Failed!", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+        }
+        else if (requestCode == CAMERA)
+        {
+            val thumbnail = data!!.extras!!.get("data") as Bitmap
+            profile_pic.setImageBitmap(thumbnail)
+            //saveImage(thumbnail)
+            //Toast.makeText(this@MainActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+//    fun saveImage(myBitmap: Bitmap):String {
+//        val bytes = ByteArrayOutputStream()
+//        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+//        val wallpaperDirectory = File(
+//                (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
+//        // have the object build the directory structure, if needed.
+//        Log.d("fee",wallpaperDirectory.toString())
+//        if (!wallpaperDirectory.exists())
+//        {
+//
+//            wallpaperDirectory.mkdirs()
+//        }
+//
+//        try
+//        {
+//            Log.d("heel",wallpaperDirectory.toString())
+//            val f = File(wallpaperDirectory, ((Calendar.getInstance()
+//                    .getTimeInMillis()).toString() + ".jpg"))
+//            f.createNewFile()
+//            val fo = FileOutputStream(f)
+//            fo.write(bytes.toByteArray())
+//            MediaScannerConnection.scanFile(this,
+//                    arrayOf(f.getPath()),
+//                    arrayOf("image/jpeg"), null)
+//            fo.close()
+//            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
+//
+//            return f.getAbsolutePath()
+//        }
+//        catch (e1: IOException) {
+//            e1.printStackTrace()
+//        }
+//
+//        return ""
+//    }
 
     /** 버튼 활성화 관련 옵저버 observableDoubleId 에 불린 값 전달 */
     private fun checkDoubleIdForButton(t: CharSequence?) : Boolean {

@@ -250,4 +250,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/checkId" />
 
+    <Button
+        android:id="@+id/changeProfileButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:background="@drawable/ic_settings"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_pic"
+        app:layout_constraintEnd_toEndOf="@+id/profile_pic"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/profile_pic"
+        app:layout_constraintTop_toTopOf="@+id/profile_pic"
+        app:layout_constraintVertical_bias="0.0" />
+
 </android.support.constraint.ConstraintLayout>
