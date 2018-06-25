@@ -59,29 +59,14 @@ class MainActivity : AppCompatActivity() {
         fragmentManager.beginTransaction().replace(R.id.flcontent, todoListFragment).commit()
         setupDrawerContent(nvDrawer)
 
+        /** 로그인한 회원정보로 아이디와 프로필 이미지 설정 */
         val headerView = nv.getHeaderView(0)
         headerView.headerId.text = getIdFromMyPref
 
         val user = realmManager.findAll(getIdFromMyPref, "userId", Person::class.java)
-
-
-//        val byteArray: ByteArray? = null //need to initialize it
-//        val profilePic = user[0]?.profilePic.(byteArray)
-//        profilePic.getImage()
-
         val data = user[0]!!.profilePic
-//        val bis = ByteArrayInputStream(data)
-//        val bImage2 = ImageIO.read(bis)
-//        ImageIO.write(bImage2, "jpg", File("output.jpg"))
-//        println("image created")
-
         val bmp = BitmapFactory.decodeByteArray(data,0, data!!.size)
-        //val imageView = ImageView(this@ConversationsActivity)
-
         headerView.headerProfilePic.setImageBitmap(bmp)
-        //imageView.setImageBitmap(bmp)
-
-
 
         try {
             supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
@@ -91,24 +76,12 @@ class MainActivity : AppCompatActivity() {
             println(e.message)
         }
 
-        //var intentBundle = Bundle()
-
-
         addTodoButton.setOnClickListener {
-//            val i = Intent(this, AddTodoActivity::class.java)
-//            startActivityForResult(i,1)
-
             startActivityForResult<AddTodoActivity>(1)
-            //startActivityForResult(i,1,intentBundle)
-
-            //startActivity<AddTodoActivity>(1)
-            //finish()
             overridePendingTransition(R.anim.activity_slide_in, R.anim.activity_slide_out)
             Log.d(TAG, "clicked addTodoButton : $getIdFromMyPref")
         }
-
     }
-
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (mToggle!!.onOptionsItemSelected(item)) {

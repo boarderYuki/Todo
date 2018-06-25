@@ -1,19 +1,28 @@
 package io.indexpath.todo
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.media.MediaScannerConnection
 import android.os.Bundle
+import android.os.Environment
 import android.provider.MediaStore
 import android.support.v4.content.ContextCompat
+import android.support.v7.app.ActionBar
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import android.util.Patterns
 import android.view.MenuItem
-import android.widget.ImageView
 import android.widget.Toast
 import com.jakewharton.rxbinding2.widget.RxTextView
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionDeniedResponse
+import com.karumi.dexter.listener.PermissionGrantedResponse
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.single.PermissionListener
 import es.dmoral.toasty.Toasty
 import io.indexpath.todo.realmDB.Person
 import io.indexpath.todo.realmDB.UserRealmManager
@@ -24,17 +33,16 @@ import io.reactivex.functions.BiFunction
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import kotlinx.android.synthetic.main.activity_join.*
+import kotlinx.android.synthetic.main.custom_bar_main.view.*
 import org.jetbrains.anko.startActivity
 import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
 import java.io.IOException
 import java.util.*
 import java.util.concurrent.TimeUnit
 
-
-
 class JoinActivity : AppCompatActivity() {
-
-    //private lateinit var userRealmManager: UserRealmManager
 
     var userRealmManager = UserRealmManager()
     var imageIdList = arrayOf<Int>(
@@ -42,27 +50,20 @@ class JoinActivity : AppCompatActivity() {
 
     private val GALLERY = 1
     private val CAMERA = 2
-    var profileImageToSave : ImageView? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        //supportActionBar!!.setTitle("MEMBER REGISTRATION")
         setContentView(R.layout.activity_join)
+        supportActionBar!!.displayOptions = ActionBar.DISPLAY_SHOW_CUSTOM
+        supportActionBar!!.setCustomView(R.layout.custom_bar_addtodo)
+        supportActionBar!!.customView.customTitle.setText("Create an Account")
         supportActionBar!!.setDisplayHomeAsUpEnabled(true)
 
-        // 기본 프로필 이미지
 
+        /** 기본 프로필 이미지, 최초 디폴트 6개 이미지 중에서 랜덤으로 선택 */
         val num = Random().nextInt(imageIdList.size)
         profile_pic.setImageResource(imageIdList[num])
-        //var profileImageToSave = ImageView(this)
-        profileImageToSave = ImageView(this)
-        profileImageToSave!!.setImageResource(imageIdList[num])
         Log.d(TAG, "이미지 갯수 : ${imageIdList.size} 넘 : $num")
-
-
-
-
-
 
         /** 가입 버튼 관련 옵저버
          * 오류메세지와는 관계없이 단순히 패턴검사만 하여 가입 버튼 활성화에 사용*/
@@ -174,14 +175,12 @@ class JoinActivity : AppCompatActivity() {
         buttonLogOut.setOnClickListener {
 
             /** 렘에 회원정보 저장 */
-            val bitmap = (profileImageToSave!!.drawable as BitmapDrawable).bitmap
+            val bitmap = (profile_pic!!.drawable as BitmapDrawable).bitmap
             val stream = ByteArrayOutputStream()
             bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream)
             val profileImage = stream.toByteArray()
-            Log.d(TAG, "profileImage 갯수 : $profileImage")
 
             val person = Person()
-
             person.userId = todoInputText.text.toString()
             person.email = editTextEmail.text.toString()
             person.password = editTextPassword.text.toString()
@@ -196,15 +195,13 @@ class JoinActivity : AppCompatActivity() {
             overridePendingTransition(R.anim.activity_slide_enter, R.anim.activity_slide_exit)
         }
 
-
-        /** 프로파일 이미지 변경*/
+        /** 프로파일 이미지 변경 클릭 */
         changeProfileButton.setOnClickListener {
             showPictureDialog()
-            Toasty.success(this, "설정버튼클릭", Toast.LENGTH_SHORT, true).show()
         }
-
     }
 
+    /** 이미지 소스 선택 */
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
         pictureDialog.setTitle("Select Action")
@@ -213,41 +210,67 @@ class JoinActivity : AppCompatActivity() {
         ) { dialog, which ->
             when (which) {
                 0 -> choosePhotoFromGallary()
-                1 -> {
-                    takePhotoFromCamera()
-
-                }
+                1 -> requestCameraPermission()
             }
         }
         pictureDialog.show()
-
     }
 
+    /** 카메라 퍼미션 획득 */
+    fun requestCameraPermission() {
+        Dexter.withActivity(this)
+                .withPermission(Manifest.permission.CAMERA)
+                .withListener(object: PermissionListener {
+                    override fun onPermissionGranted(
+                            response: PermissionGrantedResponse?) {
+                        takePhotoFromCamera()
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(permission: PermissionRequest?, token: PermissionToken?) {
+
+                        token?.continuePermissionRequest()
+                        /** 다이얼로그 단계가 불필요하여 주석처리 */
+//                        AlertDialog.Builder(this@JoinActivity)
+//                                .setTitle("타이틀")
+//                                .setMessage("메세지")
+//                                .setNegativeButton(android.R.string.cancel, DialogInterface.OnClickListener
+//                                        { dialogInterface, i ->
+//                                            dialogInterface.dismiss()
+//                                            token?.cancelPermissionRequest()
+//                                        })
+//                                .setPositiveButton(android.R.string.ok, DialogInterface.OnClickListener
+//                                        { dialogInterface, i ->
+//                                            dialogInterface.dismiss()
+//                                            token?.continuePermissionRequest()
+//                                        })
+//                                .setOnDismissListener({
+//                                    token?.cancelPermissionRequest() })
+//                                .show()
+                    }
+
+                    override fun onPermissionDenied( response: PermissionDeniedResponse?) {
+                        Toasty.error(this@JoinActivity, "카메라 사용 허용", Toast.LENGTH_SHORT, true).show()
+                    }
+                })
+                .check()
+    }
+
+    /** 갤러리에서 이미지 선택 */
     private fun choosePhotoFromGallary() {
-        val galleryIntent = Intent(Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-
+        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(galleryIntent, GALLERY)
-
-//        val intent = Intent(Intent.ACTION_PICK)
-//        intent.data = android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-//        intent.type = "image/*"
-//        startActivityForResult(intent, GALLERY)
-
     }
 
+    /** 카메라 이용 이미지 선택*/
     private fun takePhotoFromCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         startActivityForResult(intent, CAMERA)
     }
 
+    /** 사용할 이미지 선택한 후 프로필 이미지에 셋트 */
     public override fun onActivityResult(requestCode:Int, resultCode:Int, data: Intent?) {
-
         super.onActivityResult(requestCode, resultCode, data)
-        /* if (resultCode == this.RESULT_CANCELED)
-         {
-         return
-         }*/
+
         if (requestCode == GALLERY)
         {
             if (data != null)
@@ -256,64 +279,56 @@ class JoinActivity : AppCompatActivity() {
                 try
                 {
                     val bitmap = MediaStore.Images.Media.getBitmap(this.contentResolver, contentURI)
-                    //val path = saveImage(bitmap)
-                    //Toast.makeText(this@MainActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
                     profile_pic.setImageBitmap(bitmap)
-                    profileImageToSave!!.setImageBitmap(bitmap)
-
                 }
                 catch (e: IOException) {
                     e.printStackTrace()
-                    //Toast.makeText(this@MainActivity, "Failed!", Toast.LENGTH_SHORT).show()
                 }
-
             }
-
         }
         else if (requestCode == CAMERA)
         {
-            val thumbnail = data!!.extras!!.get("data") as Bitmap
-            profile_pic.setImageBitmap(thumbnail)
-            //saveImage(thumbnail)
-            //Toast.makeText(this@MainActivity, "Image Saved!", Toast.LENGTH_SHORT).show()
+            if (data != null)
+            {
+                val thumbnail = data!!.extras!!.get("data") as Bitmap
+                profile_pic.setImageBitmap(thumbnail)
+                saveImage(thumbnail)
+            }
         }
     }
 
-//    fun saveImage(myBitmap: Bitmap):String {
-//        val bytes = ByteArrayOutputStream()
-//        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
-//        val wallpaperDirectory = File(
-//                (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
-//        // have the object build the directory structure, if needed.
-//        Log.d("fee",wallpaperDirectory.toString())
-//        if (!wallpaperDirectory.exists())
-//        {
-//
-//            wallpaperDirectory.mkdirs()
-//        }
-//
-//        try
-//        {
-//            Log.d("heel",wallpaperDirectory.toString())
-//            val f = File(wallpaperDirectory, ((Calendar.getInstance()
-//                    .getTimeInMillis()).toString() + ".jpg"))
-//            f.createNewFile()
-//            val fo = FileOutputStream(f)
-//            fo.write(bytes.toByteArray())
-//            MediaScannerConnection.scanFile(this,
-//                    arrayOf(f.getPath()),
-//                    arrayOf("image/jpeg"), null)
-//            fo.close()
-//            Log.d("TAG", "File Saved::--->" + f.getAbsolutePath())
-//
-//            return f.getAbsolutePath()
-//        }
-//        catch (e1: IOException) {
-//            e1.printStackTrace()
-//        }
-//
-//        return ""
-//    }
+    /** 카메라 이용해서 프로필 이미지 사용시 앨범에도 사진 저장 */
+    fun saveImage(myBitmap: Bitmap):String {
+        val bytes = ByteArrayOutputStream()
+        myBitmap.compress(Bitmap.CompressFormat.JPEG, 90, bytes)
+        val wallpaperDirectory = File(
+                (Environment.getExternalStorageDirectory()).toString() + IMAGE_DIRECTORY)
+        // have the object build the directory structure, if needed.
+        Log.d("fee",wallpaperDirectory.toString())
+        if (!wallpaperDirectory.exists())
+        {
+            wallpaperDirectory.mkdirs()
+        }
+
+        try
+        {
+            Log.d("heel",wallpaperDirectory.toString())
+            val f = File(wallpaperDirectory, ((Calendar.getInstance().getTimeInMillis()).toString() + ".jpg"))
+            f.createNewFile()
+            val fo = FileOutputStream(f)
+            fo.write(bytes.toByteArray())
+            MediaScannerConnection.scanFile(this, arrayOf(f.getPath()), arrayOf("image/jpeg"), null)
+            fo.close()
+            Log.d("gfd", "File Saved::--->" + f.getAbsolutePath())
+
+            return f.getAbsolutePath()
+        }
+        catch (e1: IOException) {
+            e1.printStackTrace()
+        }
+
+        return ""
+    }
 
     /** 버튼 활성화 관련 옵저버 observableDoubleId 에 불린 값 전달 */
     private fun checkDoubleIdForButton(t: CharSequence?) : Boolean {
@@ -352,5 +367,9 @@ class JoinActivity : AppCompatActivity() {
 
     companion object {
         private val TAG = "Todo"
+        private val IMAGE_DIRECTORY = "/Todos"
     }
 }
+
+
+
