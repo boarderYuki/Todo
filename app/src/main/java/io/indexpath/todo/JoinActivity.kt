@@ -204,8 +204,8 @@ class JoinActivity : AppCompatActivity() {
     /** 이미지 소스 선택 */
     private fun showPictureDialog() {
         val pictureDialog = AlertDialog.Builder(this)
-        pictureDialog.setTitle("Select Action")
-        val pictureDialogItems = arrayOf("Select photo from gallery", "Capture photo from camera")
+        pictureDialog.setTitle("프로필 이미지 선택")
+        val pictureDialogItems = arrayOf("사진앨범에서", "카메라에서")
         pictureDialog.setItems(pictureDialogItems
         ) { dialog, which ->
             when (which) {
